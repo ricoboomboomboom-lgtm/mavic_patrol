@@ -1,0 +1,48 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+
+WorldInfo {
+  info [
+    "Mavic 2 Pro autonomous zigzag scan. Controller mavic2pro_controller."
+    "Joystick: set controller to mavic_joystick. Perimeter patrol: mavic_patrol."
+    "Accelerometer and altimeter are added in bodySlot; the stock proto does not include them."
+  ]
+  title "Mavic zigzag scan"
+  basicTimeStep 8
+  defaultDamping Damping {
+    linear 0.5
+    angular 0.5
+  }
+}
+Viewpoint {
+  orientation -0.11914522061843065 0 0.9928768384869221 2.7
+  position 19.919360772483614 -7.8300987283140975 4.947396968879345
+  near 0.2
+  follow "Mavic 2 PRO"
+  followSmoothness 0.25
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 20 20
+}
+Mavic2Pro {
+  translation 0 0 0.1
+  controller "mavic2pro_controller"
+  bodySlot [
+    Accelerometer {
+    }
+    Altimeter {
+    }
+  ]
+  cameraSlot [
+    Camera {
+      width 400
+      height 240
+      near 0.2
+    }
+  ]
+}

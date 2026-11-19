@@ -1,0 +1,53 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+
+WorldInfo {
+  info [
+    "Mavic 2 Pro autonomous zigzag scan. Controller: mavic2pro_controller."
+    "Mission: take off to 5 m, cover 20 m forward by 10 m wide, return, land."
+    "The stock Mavic2Pro proto has no accelerometer and no altimeter; both are added on bodySlot."
+    "Arena is 60 m by 40 m so the scan, which starts at the drone and runs toward +X, stays on the floor."
+  ]
+  title "Mavic zigzag scan"
+  basicTimeStep 8
+  defaultDamping Damping {
+    linear 0.5
+    angular 0.5
+  }
+}
+Viewpoint {
+  orientation -0.12 0 1 2.7
+  position 18 -22 14
+  near 0.2
+  follow "Mavic 2 PRO"
+  followSmoothness 0.25
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 60 40
+}
+Mavic2Pro {
+  translation 0 0 0.1
+  rotation 0 0 1 0
+  controller "mavic2pro_controller"
+  bodySlot [
+    Accelerometer {
+    }
+    Altimeter {
+    }
+  ]
+  cameraSlot [
+    Camera {
+      width 400
+      height 240
+      near 0.2
+    }
+  ]
+}

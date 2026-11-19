@@ -1,0 +1,9 @@
+# Объектная разведка.
+# center — точка объекта в метрах карты.
+# radius — радиус круга. laps — число кругов.
+
+mode = object
+altitude = 1
+center = 12 0
+radius = 6
+laps = 1
