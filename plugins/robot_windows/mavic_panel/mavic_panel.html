@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<link rel="icon" type="image/png" href="https://cyberbotics.com/assets/images/webots.png">
+<script>
+  function panelRobotName() {
+    var query = window.location.search.replace(/^\?/, "");
+    var parts = query.split("&");
+    var i;
+    var name = "";
+    for (i = 0; i < parts.length; i++) {
+      if (parts[i].indexOf("name=") === 0)
+        name = decodeURIComponent(parts[i].slice(5).replace(/\+/g, " "));
+    }
+    if (!name || name === "Mavic")
+      return "Mavic 2 PRO";
+    return name;
+  }
+  function PanelLink() {
+    var href = window.location.href;
+    var cut = href.indexOf("/robot_windows/");
+    if (cut < 0)
+      cut = href.indexOf("/~WEBOTS_HOME/");
+    var base = cut >= 0 ? href.slice(0, cut + 1) : (window.location.protocol + "//" + window.location.host + "/");
+    this.serverName = panelRobotName();
+    this.queue = [];
+    this.receive = function () {};
+    var link = this;
+    try {
+      this.socket = new WebSocket(base.replace(/^http/, "ws"));
+    } catch (error) {
+      this.socket = { readyState: 3, send: function () {} };
+    }
+    this.socket.onopen = function () {
+      link.socket.send("robot:" + link.serverName + ":init robot window");
+      link.flush();
+    };
+    this.socket.onmessage = function (event) { link.onMessage(event.data); };
+    this.socket.onerror = function () {};
+  }
+  PanelLink.prototype.flush = function () {
+    if (!this.serverName || this.socket.readyState !== 1)
+      return;
+    while (this.queue.length)
+      this.socket.send("robot:" + this.serverName + ":" + this.queue.shift());
+  };
+  PanelLink.prototype.send = function (message) {
+    this.queue.push(String(message));
+    this.flush();
+  };
+  PanelLink.prototype.onMessage = function (raw) {
+    var lines = String(raw).split(/\r?\n/);
+    var i;
+    for (i = 0; i < lines.length; i++) {
+      var data = lines[i];
+      if (data.indexOf("robot:") !== 0)
+        continue;
+      var body = data.slice(6).trim();
+      var message = "";
+      var robot = "";
+      try {
+        var json = JSON.parse(body);
+        message = json.message || "";
+        robot = json.name || "";
+      } catch (error) {
+        var messageMatch = data.match(/"message":"((?:\\.|[^"\\])*)"/);
+        var nameMatch = data.match(/"name":"([^"]*)"/);
+        message = messageMatch ? messageMatch[1] : "";
+        robot = nameMatch ? nameMatch[1] : "";
+      }
+      if (robot)
+        this.serverName = robot;
+      message = String(message).replace(/\0/g, "");
+      if (message && this.receive)
+        this.receive(message, robot);
+      this.flush();
+    }
+  };
+  window.robotWindow = new PanelLink();
+</script>
+<style>
+  :root {
+    --ink: #e7efe8;
+    --muted: #93a79a;
+    --line: #2c4036;
+    --card: #17241c;
+    --bg: #0c1410;
+    --brass: #e2b15a;
+    --go: #1f7a46;
+    --again: #31506a;
+    --stop: #8e3a32;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 14px;
+    color: var(--ink);
+    background:
+      radial-gradient(1200px 280px at 10% -10%, rgba(226, 177, 90, 0.16), transparent 50%),
+      var(--bg);
+    font: 13px/1.4 "Segoe UI", sans-serif;
+  }
+  .shell { max-width: 440px; margin: 0 auto; }
+  header { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; margin-bottom: 12px; }
+  .kicker { color: var(--brass); letter-spacing: 0.16em; font-size: 10px; text-transform: uppercase; }
+  h1 { margin: 2px 0 0; font: 600 22px/1.1 "Segoe UI", sans-serif; }
+  .lead { margin: 0 0 12px; color: var(--muted); }
+  #live {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    max-width: 190px;
+    padding: 8px 10px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: #101a14;
+  }
+  #dot {
+    width: 9px;
+    height: 9px;
+    margin-top: 4px;
+    border-radius: 50%;
+    background: #8d7840;
+    flex: none;
+  }
+  #live[data-tone="fly"] #dot { background: #3dbe73; box-shadow: 0 0 8px #3dbe73; }
+  #live[data-tone="bad"] #dot { background: #e15b4f; }
+  #live[data-tone="wait"] #dot { background: var(--brass); }
+  #status { color: var(--ink); }
+  .card {
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: linear-gradient(180deg, #1c2b22, var(--card));
+  }
+  .modes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+  .tile {
+    text-align: left;
+    padding: 8px 10px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: #101a14;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .tile b { display: block; font-weight: 650; }
+  .tile span { display: block; margin-top: 2px; color: var(--muted); font-size: 11px; }
+  .tile.on { border-color: var(--brass); background: #243326; }
+  .group { margin-top: 10px; }
+  .group h2 { margin: 0 0 6px; color: var(--brass); font: 600 11px/1 "Segoe UI", sans-serif; letter-spacing: 0.08em; text-transform: uppercase; }
+  label { display: block; margin: 8px 0 3px; color: var(--muted); font-size: 12px; }
+  input, select, textarea {
+    width: 100%;
+    border: 1px solid #3d5348;
+    border-radius: 8px;
+    padding: 7px 8px;
+    color: var(--ink);
+    background: #0d1612;
+    font: inherit;
+  }
+  textarea { min-height: 92px; resize: vertical; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .actions { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 8px; margin-top: 14px; }
+  button {
+    border: 0;
+    border-radius: 10px;
+    padding: 10px 8px;
+    color: white;
+    font: 600 13px/1 "Segoe UI", sans-serif;
+    cursor: pointer;
+  }
+  #start { background: var(--go); }
+  #again { background: var(--again); }
+  #abort { background: var(--stop); }
+  button:disabled { opacity: 0.38; cursor: default; }
+  .hint { margin: 8px 0 0; color: var(--muted); font-size: 12px; }
+  .map-head { display: block; }
+  #map-hint { margin: 0; }
+  .map-foot { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 6px; }
+  .zoom { display: flex; gap: 6px; }
+  .zoom button, #add-point, .remove {
+    width: auto;
+    background: #24362c;
+    color: var(--ink);
+    border: 1px solid var(--line);
+    padding: 6px 8px;
+    font-weight: 600;
+  }
+  #add-point { width: 100%; margin-top: 8px; }
+  #zone {
+    width: 100%;
+    height: 220px;
+    margin-top: 8px;
+    display: block;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: #0d1612;
+    touch-action: none;
+    cursor: crosshair;
+  }
+  .compass { margin: 0; color: var(--muted); font-size: 12px; }
+  .point-head, .point {
+    display: grid;
+    grid-template-columns: 22px 1fr 1fr 32px;
+    gap: 6px;
+    align-items: center;
+  }
+  .point-head { margin-top: 8px; color: var(--muted); font-size: 11px; }
+  .point { margin-top: 6px; }
+  .idx { color: var(--brass); font-weight: 700; text-align: center; }
+  #point-list { max-height: 168px; overflow: auto; }
+  #manual { display: none; }
+  #manual p { margin: 0 0 8px; }
+  .hidden { display: none; }
+  .offscreen { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div>
+        <div class="kicker">Mavic 2 Pro</div>
+        <h1>Задание</h1>
+      </div>
+      <div id="live" data-tone="idle"><span id="dot"></span><span id="status">Ожидание контроллера</span></div>
+    </header>
+    <div id="patrol" class="card">
+      <p class="lead">Дрон ждёт на площадке. Выберите режим, поправьте числа и нажмите «Старт».</p>
+      <div class="modes" id="modes">
+        <button type="button" class="tile on" data-mode="area"><b>Площадная</b><span>галсы по району</span></button>
+        <button type="button" class="tile" data-mode="route"><b>Маршрутная</b><span>полоса вдоль ломаной</span></button>
+        <button type="button" class="tile" data-mode="object"><b>Объектная</b><span>круги вокруг точки</span></button>
+        <button type="button" class="tile" data-mode="watch"><b>Дозор</b><span>обход контура</span></button>
+      </div>
+      <select id="mode" class="offscreen" tabindex="-1" aria-hidden="true">
+        <option value="area">Площадная — галсы по району</option>
+        <option value="route">Маршрутная — полоса вдоль ломаной</option>
+        <option value="object">Объектная — круги вокруг точки</option>
+        <option value="watch">Дозор — обход контура</option>
+      </select>
+      <div class="group">
+        <h2>Общие</h2>
+        <label for="altitude">Высота, м</label>
+        <input id="altitude" type="number" min="0.5" max="80" step="0.5" value="1">
+        <label for="repeats">Сколько раз выполнить всё задание</label>
+        <input id="repeats" type="number" min="1" max="20" step="1" value="1">
+      </div>
+      <div class="group" id="shape">
+        <h2>Фигура</h2>
+        <div id="spacing-field">
+          <label for="spacing">Шаг галсов или проходов, м</label>
+          <input id="spacing" type="number" min="0.5" step="0.5" value="5">
+        </div>
+        <div id="width-field">
+          <label for="width">Ширина полосы, м</label>
+          <input id="width" type="number" min="0" step="1" value="8">
+        </div>
+        <div id="radius-field">
+          <label for="radius">Радиус круга, м</label>
+          <input id="radius" type="number" min="1" step="1" value="6">
+        </div>
+        <div id="laps-field">
+          <label for="laps">Число кругов или обходов</label>
+          <input id="laps" type="number" min="1" max="20" step="1" value="1">
+        </div>
+        <div id="map-field">
+          <div class="map-head">
+            <p id="map-hint">Клик по карте ставит угол. Площадка — в центре.</p>
+          </div>
+          <canvas id="zone" width="640" height="440" aria-label="Карта зоны. Север сверху, восток справа."></canvas>
+          <div class="map-foot">
+            <p class="compass">Север сверху, восток справа. Ноль — площадка.</p>
+            <div class="zoom">
+              <button id="zoom-in" type="button">Ближе</button>
+              <button id="zoom-out" type="button">Дальше</button>
+            </div>
+          </div>
+        </div>
+        <div id="center-field">
+          <div class="row">
+            <div>
+              <label for="cx">Центр, восток</label>
+              <input id="cx" type="number" step="1" value="12">
+            </div>
+            <div>
+              <label for="cy">Центр, север</label>
+              <input id="cy" type="number" step="1" value="0">
+            </div>
+          </div>
+        </div>
+        <div id="points-field">
+          <div class="point-head"><span>№</span><span>Восток, м</span><span>Север, м</span><span></span></div>
+          <div id="point-list"></div>
+          <button id="add-point" type="button">Добавить точку</button>
+          <textarea id="points" class="offscreen" tabindex="-1" aria-hidden="true">-20 -20
+20 -20
+20 20
+-20 20</textarea>
+        </div>
+      </div>
+      <div class="actions">
+        <button id="start" type="button">Старт</button>
+        <button id="again" type="button">Заново</button>
+        <button id="abort" type="button">Прервать</button>
+      </div>
+      <p class="hint">«Старт» с площадки. «Заново» с первой точки, не садясь. «Прервать» возвращает и сажает.</p>
+    </div>
+    <div id="manual" class="card">
+      <p>Сейчас включён пульт TX12. Кнопка 0 включает моторы, кнопка 1 даёт взлёт. Посадка — левый стик вниз, пока в консоли не появится LANDED.</p>
+      <p>Режимы разведки задаются на этой панели, когда в запуске выбран патруль.</p>
+    </div>
+  </div>
+  <script>
+    const fields = {
+      area: ["spacing", "map", "points"],
+      route: ["spacing", "width", "map", "points"],
+      object: ["radius", "laps", "map", "center"],
+      watch: ["laps", "map", "points"]
+    };
+    const viewSteps = [20, 40, 80, 160, 250];
+    let viewIndex = 1;
+    let drag = null;
+    let eventWorldStart = { x: 0, y: 0 };
+    let dirty = false;
+    let manualMode = false;
+    let phase = "WAIT";
+    let passText = "";
+    let heldError = "";
+
+    const mapHints = {
+      area: "Клик ставит угол района. Дрон идёт по номерам и замыкает контур.",
+      route: "Клик ставит точку ломаной. Порядок номеров — это направление пути.",
+      object: "Клик ставит центр круга. Радиус задаётся числом.",
+      watch: "Клик ставит угол контура. Дозор замыкает его сам."
+    };
+
+    function showFields() {
+      const mode = document.getElementById("mode").value;
+      ["spacing", "width", "radius", "laps", "center", "points", "map"].forEach((name) => {
+        document.getElementById(name + "-field").classList.toggle("hidden", fields[mode].indexOf(name) < 0);
+      });
+      document.querySelectorAll(".tile").forEach((tile) => {
+        const on = tile.getAttribute("data-mode") === mode;
+        tile.classList.toggle("on", on);
+        tile.setAttribute("aria-pressed", on ? "true" : "false");
+      });
+      document.getElementById("map-hint").textContent = mapHints[mode];
+      drawZone();
+    }
+
+    function clampMap(value) {
+      return Math.max(-250, Math.min(250, value));
+    }
+
+    function readPoints() {
+      return document.getElementById("points").value.split(/\n+/).map((line) => {
+        const parts = line.trim().split(/\s+/);
+        const x = Number(parts[0]);
+        const y = Number(parts[1]);
+        if (!isFinite(x) || !isFinite(y))
+          return null;
+        return { x: x, y: y };
+      }).filter(Boolean);
+    }
+
+    function writePoints(list, rebuild) {
+      document.getElementById("points").value = list.map((point) => point.x + " " + point.y).join("\n");
+      if (rebuild)
+        buildPointList();
+      drawZone();
+    }
+
+    function buildPointList() {
+      const host = document.getElementById("point-list");
+      host.innerHTML = "";
+      readPoints().forEach((point, index) => {
+        const row = document.createElement("div");
+        row.className = "point";
+        const indexLabel = document.createElement("span");
+        indexLabel.className = "idx";
+        indexLabel.textContent = String(index + 1);
+        const east = document.createElement("input");
+        east.type = "number";
+        east.step = "1";
+        east.value = String(point.x);
+        east.setAttribute("aria-label", "Восток, точка " + (index + 1));
+        const north = document.createElement("input");
+        north.type = "number";
+        north.step = "1";
+        north.value = String(point.y);
+        north.setAttribute("aria-label", "Север, точка " + (index + 1));
+        east.addEventListener("input", () => editPoint(index, "x", east.value));
+        north.addEventListener("input", () => editPoint(index, "y", north.value));
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.className = "remove";
+        remove.textContent = "×";
+        remove.setAttribute("aria-label", "Убрать точку " + (index + 1));
+        remove.addEventListener("click", () => removePoint(index));
+        row.append(indexLabel, east, north, remove);
+        host.appendChild(row);
+      });
+    }
+
+    function editPoint(index, axis, value) {
+      if (value === "" || value === "-" || value === "." || value === "-.")
+        return;
+      const number = Number(value);
+      if (!isFinite(number))
+        return;
+      const list = readPoints();
+      if (!list[index])
+        return;
+      list[index][axis] = clampMap(number);
+      writePoints(list, false);
+      markDirty();
+    }
+
+    function removePoint(index) {
+      const list = readPoints();
+      list.splice(index, 1);
+      writePoints(list, true);
+      markDirty();
+    }
+
+    function addPoint(x, y) {
+      const list = readPoints();
+      if (list.length >= 64)
+        return;
+      list.push({ x: clampMap(Math.round(x)), y: clampMap(Math.round(y)) });
+      writePoints(list, true);
+      markDirty();
+    }
+
+    function setCenter(x, y, fromUser) {
+      document.getElementById("cx").value = String(clampMap(Math.round(x)));
+      document.getElementById("cy").value = String(clampMap(Math.round(y)));
+      drawZone();
+      if (fromUser)
+        markDirty();
+    }
+
+    function viewMeters() {
+      return viewSteps[viewIndex];
+    }
+
+    function eventWorld(event) {
+      const canvas = document.getElementById("zone");
+      const rect = canvas.getBoundingClientRect();
+      const span = viewMeters() * 2;
+      return {
+        x: ((event.clientX - rect.left) / rect.width - 0.5) * span,
+        y: (0.5 - (event.clientY - rect.top) / rect.height) * span
+      };
+    }
+
+    function drawZone() {
+      const canvas = document.getElementById("zone");
+      const rect = canvas.getBoundingClientRect();
+      if (rect.width < 2 || rect.height < 2)
+        return;
+      const ratio = window.devicePixelRatio || 1;
+      canvas.width = Math.round(rect.width * ratio);
+      canvas.height = Math.round(rect.height * ratio);
+      const ctx = canvas.getContext("2d");
+      const width = canvas.width;
+      const height = canvas.height;
+      const span = viewMeters() * 2;
+      const toPx = (x, y) => ({
+        px: (x / span + 0.5) * width,
+        py: (0.5 - y / span) * height
+      });
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = "#0d1612";
+      ctx.fillRect(0, 0, width, height);
+      const step = viewMeters() <= 40 ? 10 : (viewMeters() <= 80 ? 20 : 50);
+      ctx.strokeStyle = "#24362c";
+      ctx.lineWidth = 1;
+      ctx.font = (11 * ratio) + "px Segoe UI";
+      ctx.fillStyle = "#93a79a";
+      for (let east = -250; east <= 250; east += step) {
+        const p = toPx(east, 0);
+        ctx.beginPath();
+        ctx.moveTo(p.px, 0);
+        ctx.lineTo(p.px, height);
+        ctx.stroke();
+        if (east !== 0 && Math.abs(east) % (step * 2) === 0)
+          ctx.fillText(String(east), p.px + 3, height - 6 * ratio);
+      }
+      for (let north = -250; north <= 250; north += step) {
+        const p = toPx(0, north);
+        ctx.beginPath();
+        ctx.moveTo(0, p.py);
+        ctx.lineTo(width, p.py);
+        ctx.stroke();
+      }
+      const origin = toPx(0, 0);
+      ctx.strokeStyle = "#3dbe73";
+      ctx.lineWidth = 2 * ratio;
+      ctx.beginPath();
+      ctx.moveTo(origin.px - 7 * ratio, origin.py);
+      ctx.lineTo(origin.px + 7 * ratio, origin.py);
+      ctx.moveTo(origin.px, origin.py - 7 * ratio);
+      ctx.lineTo(origin.px, origin.py + 7 * ratio);
+      ctx.stroke();
+      ctx.fillStyle = "#3dbe73";
+      ctx.fillText("площадка", origin.px + 8 * ratio, origin.py - 6 * ratio);
+      ctx.fillText("север", width / 2 - 16 * ratio, 16 * ratio);
+      const mode = document.getElementById("mode").value;
+      if (mode === "object") {
+        const cx = Number(document.getElementById("cx").value) || 0;
+        const cy = Number(document.getElementById("cy").value) || 0;
+        const radius = Math.abs(Number(document.getElementById("radius").value) || 0);
+        const center = toPx(cx, cy);
+        const edge = toPx(cx + radius, cy);
+        ctx.beginPath();
+        ctx.fillStyle = "rgba(61, 190, 115, 0.16)";
+        ctx.strokeStyle = "#3dbe73";
+        ctx.lineWidth = 2 * ratio;
+        ctx.arc(center.px, center.py, Math.abs(edge.px - center.px), 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(center.px, center.py, 5 * ratio, 0, Math.PI * 2);
+        ctx.fillStyle = "#e2b15a";
+        ctx.fill();
+        return;
+      }
+      const points = readPoints();
+      if (points.length === 0)
+        return;
+      ctx.beginPath();
+      points.forEach((point, index) => {
+        const p = toPx(point.x, point.y);
+        if (index === 0)
+          ctx.moveTo(p.px, p.py);
+        else
+          ctx.lineTo(p.px, p.py);
+      });
+      if (mode !== "route")
+        ctx.closePath();
+      ctx.strokeStyle = "#e2b15a";
+      ctx.lineWidth = 2 * ratio;
+      if (mode !== "route") {
+        ctx.fillStyle = "rgba(226, 177, 90, 0.18)";
+        ctx.fill();
+      }
+      ctx.stroke();
+      points.forEach((point, index) => {
+        const p = toPx(point.x, point.y);
+        ctx.beginPath();
+        ctx.arc(p.px, p.py, 9 * ratio, 0, Math.PI * 2);
+        ctx.fillStyle = "#e7efe8";
+        ctx.fill();
+        ctx.fillStyle = "#0c1410";
+        ctx.font = "700 " + (11 * ratio) + "px Segoe UI";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(String(index + 1), p.px, p.py + ratio);
+        ctx.textAlign = "start";
+        ctx.textBaseline = "alphabetic";
+      });
+    }
+
+    function hitPoint(event) {
+      const canvas = document.getElementById("zone");
+      const rect = canvas.getBoundingClientRect();
+      const span = viewMeters() * 2;
+      let nearest = -1;
+      let best = 14;
+      readPoints().forEach((point, index) => {
+        const px = (point.x / span + 0.5) * rect.width;
+        const py = (0.5 - point.y / span) * rect.height;
+        const distance = Math.hypot(event.clientX - rect.left - px, event.clientY - rect.top - py);
+        if (distance < best) {
+          best = distance;
+          nearest = index;
+        }
+      });
+      return nearest;
+    }
+
+    function markDirty() { dirty = true; }
+
+    function fill(message) {
+      const parts = message.split("|");
+      if (parts.length < 9 || parts[0] !== "cfg")
+        return;
+      document.getElementById("mode").value = parts[1];
+      document.getElementById("altitude").value = parts[2];
+      document.getElementById("spacing").value = parts[3];
+      document.getElementById("width").value = parts[4];
+      document.getElementById("radius").value = parts[5];
+      document.getElementById("laps").value = parts[6];
+      let centerText = parts[7].trim();
+      let repeatsText = "1";
+      let pointAt = 8;
+      if (centerText.indexOf(" ") >= 0) {
+        repeatsText = parts[8];
+        pointAt = 9;
+      } else if (parts.length >= 10) {
+        centerText = parts[7] + " " + parts[8];
+        repeatsText = parts[9];
+        pointAt = 10;
+      }
+      const center = centerText.split(/\s+/);
+      document.getElementById("cx").value = center[0] || "0";
+      document.getElementById("cy").value = center[1] || "0";
+      const repeats = Number(repeatsText);
+      document.getElementById("repeats").value = repeats >= 1 && repeats <= 20 ? String(repeats) : "1";
+      document.getElementById("points").value = parts.slice(pointAt).join("|").split(";").join("\n");
+      buildPointList();
+      showFields();
+    }
+
+    function startMessage() {
+      const points = document.getElementById("points").value
+        .split(/\n+/)
+        .map((line) => line.trim())
+        .filter((line) => line.length > 0)
+        .join(";");
+      return [
+        "start",
+        document.getElementById("mode").value,
+        document.getElementById("altitude").value,
+        document.getElementById("spacing").value,
+        document.getElementById("width").value,
+        document.getElementById("radius").value,
+        document.getElementById("laps").value,
+        document.getElementById("cx").value + " " + document.getElementById("cy").value,
+        document.getElementById("repeats").value,
+        points
+      ].join("|");
+    }
+
+    function setTone(tone) {
+      document.getElementById("live").setAttribute("data-tone", tone);
+    }
+
+    function showStatus(code) {
+      code = String(code).replace(/\0/g, "").trim();
+      const names = {
+        WAIT: "Ожидание старта",
+        READY: "Старт принят",
+        TAKEOFF: "Взлёт",
+        HOVER: "Зависание",
+        ZIGZAG_SCAN: "Выполняется задание",
+        RETURN_HOME: "Возврат",
+        LANDING: "Посадка",
+        LANDED: "На земле",
+        EMERGENCY: "Остановка"
+      };
+      const grounded = code === "WAIT" || code === "LANDED" || code === "EMERGENCY" || code === "INITIALIZATION";
+      const title = names[code] || code;
+      document.getElementById("status").textContent = heldError ? heldError : (passText && !grounded ? title + ". " + passText : title);
+      document.getElementById("start").disabled = !grounded;
+      document.getElementById("again").disabled = false;
+      document.getElementById("abort").disabled = grounded;
+      setTone(heldError || code === "EMERGENCY" ? "bad" : (grounded ? "wait" : "fly"));
+    }
+
+    function sendStart() {
+      heldError = "";
+      document.getElementById("status").textContent = window.robotWindow.serverName ? "Команда отправлена" : "Нет связи с дроном";
+      setTone(window.robotWindow.serverName ? "fly" : "bad");
+      window.robotWindow.send(startMessage());
+    }
+
+    window.onload = () => {
+      document.getElementById("mode").addEventListener("change", () => { markDirty(); showFields(); });
+      document.querySelectorAll(".tile").forEach((tile) => {
+        tile.addEventListener("click", () => {
+          document.getElementById("mode").value = tile.getAttribute("data-mode");
+          markDirty();
+          showFields();
+        });
+      });
+      document.querySelectorAll("input, textarea").forEach((node) => node.addEventListener("input", markDirty));
+      ["cx", "cy", "radius"].forEach((id) => document.getElementById(id).addEventListener("input", drawZone));
+      document.getElementById("add-point").addEventListener("click", () => {
+        const list = readPoints();
+        const last = list.length ? list[list.length - 1] : { x: -5, y: 0 };
+        addPoint(last.x + 5, last.y);
+      });
+      document.getElementById("zoom-in").addEventListener("click", () => {
+        viewIndex = Math.max(0, viewIndex - 1);
+        drawZone();
+      });
+      document.getElementById("zoom-out").addEventListener("click", () => {
+        viewIndex = Math.min(viewSteps.length - 1, viewIndex + 1);
+        drawZone();
+      });
+      const zone = document.getElementById("zone");
+      zone.addEventListener("pointerdown", (event) => {
+        eventWorldStart = { x: event.clientX, y: event.clientY };
+        if (document.getElementById("mode").value === "object") {
+          drag = "center";
+          const place = eventWorld(event);
+          setCenter(place.x, place.y, true);
+          zone.setPointerCapture(event.pointerId);
+          return;
+        }
+        const hit = hitPoint(event);
+        if (hit >= 0) {
+          drag = hit;
+          zone.setPointerCapture(event.pointerId);
+          return;
+        }
+        drag = "add";
+        zone.setPointerCapture(event.pointerId);
+      });
+      zone.addEventListener("pointermove", (event) => {
+        if (drag === null)
+          return;
+        const place = eventWorld(event);
+        if (drag === "center")
+          setCenter(place.x, place.y, true);
+        else if (drag === "add")
+          return;
+        else {
+          const list = readPoints();
+          if (!list[drag])
+            return;
+          list[drag].x = clampMap(Math.round(place.x));
+          list[drag].y = clampMap(Math.round(place.y));
+          writePoints(list, false);
+          const rows = document.querySelectorAll("#point-list .point");
+          const row = rows[drag];
+          if (row) {
+            row.children[1].value = String(list[drag].x);
+            row.children[2].value = String(list[drag].y);
+          }
+          markDirty();
+        }
+      });
+      zone.addEventListener("pointerup", (event) => {
+        if (drag === "add") {
+          const moved = Math.hypot(event.clientX - eventWorldStart.x, event.clientY - eventWorldStart.y);
+          if (moved < 6) {
+            const place = eventWorld(event);
+            addPoint(place.x, place.y);
+          }
+        }
+        drag = null;
+      });
+      window.addEventListener("resize", drawZone);
+      buildPointList();
+      document.getElementById("start").addEventListener("click", sendStart);
+      document.getElementById("again").addEventListener("click", sendStart);
+      document.getElementById("abort").addEventListener("click", () => {
+        heldError = "";
+        document.getElementById("status").textContent = "Прерывание";
+        setTone("bad");
+        window.robotWindow.send("abort");
+      });
+      showFields();
+      window.robotWindow.receive = (message) => {
+        if (message === "ready manual") {
+          manualMode = true;
+          document.getElementById("patrol").style.display = "none";
+          document.getElementById("manual").style.display = "block";
+          document.getElementById("status").textContent = "Пульт TX12";
+          setTone("wait");
+          return;
+        }
+        if (manualMode)
+          return;
+        if (message.indexOf("cfg|") === 0) {
+          if (!dirty)
+            fill(message);
+          document.getElementById("patrol").style.display = "block";
+          return;
+        }
+        if (message.indexOf("pass ") === 0) {
+          const parts = message.split(" ");
+          const current = Number(parts[1]);
+          const total = Number(parts[2]);
+          passText = current > 0 && total > 1 ? "Проход " + current + " из " + total : "";
+          showStatus(phase);
+          return;
+        }
+        if (message.indexOf("state ") === 0) {
+          const next = message.slice(6).replace(/\0/g, "").trim();
+          if (next !== phase)
+            heldError = "";
+          phase = next;
+          showStatus(phase);
+          return;
+        }
+        if (message.indexOf("error ") === 0) {
+          heldError = message.slice(6);
+          document.getElementById("status").textContent = heldError;
+          setTone("bad");
+        }
+      };
+    };
+  </script>
+</body>
+</html>

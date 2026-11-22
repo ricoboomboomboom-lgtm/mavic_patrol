@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>БПЛА сборка — брошюра</title>
+<style>
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: #d7ddd4;
+    color: #1c2b22;
+    font-family: "Segoe UI", "Calibri", sans-serif;
+  }
+  .page {
+    width: 210mm;
+    height: 297mm;
+    margin: 0 auto 8mm;
+    background: #f7f6f1;
+    padding: 14mm 15mm 12mm;
+    position: relative;
+    overflow: hidden;
+    page-break-after: always;
+  }
+  h1, h2, h3, p { margin: 0; }
+  .kicker {
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-size: 11px;
+    color: #6d7a70;
+  }
+  h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: normal;
+    font-size: 46px;
+    line-height: 0.95;
+    margin: 6mm 0 3mm;
+  }
+  h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: normal;
+    font-size: 28px;
+    margin: 0 0 4mm;
+  }
+  h3 { font-size: 15px; margin-bottom: 1.5mm; }
+  .lead { font-size: 15px; line-height: 1.45; max-width: 165mm; }
+  .cover img {
+    width: 100%;
+    height: 108mm;
+    object-fit: cover;
+    border-radius: 8mm;
+    margin: 7mm 0 6mm;
+  }
+  .chips { display: flex; gap: 3mm; }
+  .chip {
+    flex: 1;
+    background: #1f3a2e;
+    color: #f4f1e8;
+    border-radius: 4mm;
+    padding: 4mm 4mm 3.5mm;
+  }
+  .chip b { display: block; font-size: 18px; font-weight: 600; }
+  .chip span { font-size: 12px; opacity: 0.85; }
+  .foot {
+    position: absolute;
+    left: 15mm;
+    right: 15mm;
+    bottom: 9mm;
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #6d7a70;
+  }
+  .steps { display: flex; gap: 4mm; margin-top: 6mm; }
+  .step {
+    flex: 1;
+    background: white;
+    border-radius: 4mm;
+    padding: 4mm;
+    min-height: 52mm;
+  }
+  .num {
+    width: 8mm; height: 8mm; border-radius: 50%;
+    background: #e39b2b; color: #1c2b22;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 700; margin-bottom: 2mm;
+  }
+  .step p, .note p, .card p, .mode p, .file p { font-size: 12.5px; line-height: 1.4; }
+  .keys { margin-top: 3mm; font-size: 12px; line-height: 1.55; }
+  .note {
+    margin-top: 6mm;
+    background: #e7efe4;
+    border-radius: 4mm;
+    padding: 4mm 5mm;
+  }
+  .maps {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3mm 5mm;
+    margin-top: 4mm;
+  }
+  .card {
+    display: grid;
+    grid-template-columns: 14mm 1fr;
+    gap: 3mm;
+    align-items: start;
+  }
+  .swatch {
+    height: 14mm; border-radius: 2.5mm;
+  }
+  .card b { font-size: 13px; }
+  .split { display: grid; grid-template-columns: 78mm 1fr; gap: 7mm; align-items: center; }
+  .split img { width: 100%; border-radius: 4mm; }
+  ul { margin: 2mm 0 0; padding-left: 4.5mm; }
+  li { font-size: 13px; line-height: 1.45; margin: 1mm 0; }
+  .modes { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+  .mode { background: white; border-radius: 4mm; overflow: hidden; }
+  .mode img { width: 100%; height: 52mm; object-fit: cover; display: block; }
+  .mode div { padding: 3.5mm 4mm 4mm; }
+  .mode .tag { color: #1f8a78; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .axes { display: grid; grid-template-columns: 78mm 1fr; gap: 7mm; align-items: center; margin-top: 3mm; }
+  .axes img { width: 100%; border-radius: 4mm; }
+  .files { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; margin-top: 4mm; }
+  .file { background: white; border-radius: 3mm; padding: 3.5mm 4mm; }
+  .file code { font-size: 12px; color: #1f3a2e; }
+  table { width: 100%; border-collapse: collapse; margin-top: 3mm; font-size: 12.5px; }
+  th, td { text-align: left; padding: 1.6mm 2mm; border-bottom: 0.3mm solid #e1e4dc; }
+  th { color: #6d7a70; font-weight: 600; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; margin-top: 4mm; }
+  .panel { background: white; border-radius: 4mm; padding: 4mm 4.5mm; }
+  @media print {
+    body { background: white; }
+    .page { margin: 0; }
+  }
+</style>
+</head>
+<body>
+
+<section class="page">
+  <div class="kicker">Webots R2025a · демонстрация полёта</div>
+  <h1>БПЛА сборка</h1>
+  <p class="lead">Готовый комплект для показа DJI Mavic 2 Pro: десять площадок, ручной полёт с пульта TX12 и четыре режима разведки, которые дрон выполняет сам.</p>
+  <div class="cover"><img src="cover.jpg" alt="Квадрокоптер над полями, дорогой и рекой"></div>
+  <div class="chips">
+    <div class="chip"><b>10 карт</b><span>по 500 × 500 м</span></div>
+    <div class="chip"><b>Пульт TX12</b><span>ручной полёт и посадка</span></div>
+    <div class="chip"><b>4 режима</b><span>площадь, маршрут, объект, дозор</span></div>
+  </div>
+  <div class="foot"><span>Запуск одним файлом</span><span>1</span></div>
+</section>
+
+<section class="page">
+  <div class="kicker">Как открыть</div>
+  <h2>Карта, контроллер, панель</h2>
+  <p class="lead">Дважды щёлкните <b>Запуск.bat</b>. Сначала карта, затем кто управляет. Симуляция стартует сама, отдельно нажимать воспроизведение не нужно.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="num">1</div>
+      <h3>Карта</h3>
+      <p>Цифра от 1 до 9 или 0 для острова. Взлёт всегда из центра.</p>
+      <div class="keys">1 арена<br>2 холмы и лес<br>3 город<br>4 набережная<br>5 река и мост<br>6 посёлок<br>7 порт<br>8 ущелье<br>9 поля<br>0 остров</div>
+    </div>
+    <div class="step">
+      <div class="num">2</div>
+      <h3>Кто управляет</h3>
+      <p><b>1 — пульт TX12.</b> В окне робота показаны кнопки и стики.</p>
+      <p style="margin-top:2mm"><b>2 — патруль.</b> Дрон стоит на площадке, пока в окне робота не нажата кнопка «Старт».</p>
+    </div>
+    <div class="step">
+      <div class="num">3</div>
+      <h3>Панель в Webots</h3>
+      <p>Режим и числа задаются в окне робота. Зону ставят кликом по карте: север сверху, восток справа, ноль — площадка. Те же метры можно ввести в строке точки. Если окна не видно, щёлкните дрон правой кнопкой и выберите Show Robot Window.</p>
+      <div class="keys">площадная<br>маршрутная<br>объектная<br>дозор<br>повторы всего задания<br>Прервать сажает, Заново начинает с первой точки</div>
+    </div>
+  </div>
+  <div class="note">
+    <h3>Что должно быть на месте</h3>
+    <p>Нужен установленный Webots R2025a. Папку не разбирайте: рядом с запуском остаются каталоги <b>worlds</b>, <b>controllers</b> и <b>plugins</b>. При первом открытии карты Webots может скачать модели и текстуры, если их ещё нет в кэше.</p>
+  </div>
+  <div class="foot"><span>Запуск.bat</span><span>2</span></div>
+</section>
+
+<section class="page">
+  <div class="kicker">Площадки</div>
+  <h2>Десять карт, один старт</h2>
+  <p class="lead">Каждая площадка 500 на 500 метров. В центре ровный квадрат около 90 метров: отсюда взлетают и сюда возвращаются. Вода только рисуется, садиться можно на твёрдый грунт.</p>
+  <div class="maps">
+    <div class="card"><div class="swatch" style="background:#b7c98a"></div><div><b>1 · Арена</b><p>Открытое поле и сетка 50 м. Удобно проверить взлёт, висение и посадку.</p></div></div>
+    <div class="card"><div class="swatch" style="background:#6e8f4e"></div><div><b>2 · Холмы и лес</b><p>Склоны и стволы деревьев. Кроны не мешают пролёту, стволы занимают место.</p></div></div>
+    <div class="card"><div class="swatch" style="background:#8d8a84"></div><div><b>3 · Город</b><p>Кварталы, улицы и фасады. Стены и крыши — препятствия.</p></div></div>
+    <div class="card"><div class="swatch" style="background:#7fafc4"></div><div><b>4 · Набережная</b><p>Вода с юга, променад, пирс и дома к северу от берега.</p></div></div>
+    <div class="card"><div class="swatch" style="background:#4f86a8"></div><div><b>5 · Река и мост</b><p>Русло и мост примерно в 8 м над водой. Под ним можно пролететь.</p></div></div>
+    <div class="card"><div class="swatch" style="background:#c4a574"></div><div><b>6 · Посёлок</b><p>Низкие дома, дворы и более узкие дороги.</p></div></div>
+    <div class="card"><div class="swatch" style="background:#5c6b78"></div><div><b>7 · Порт</b><p>Склады, штабели контейнеров и вода вдоль восточного края.</p></div></div>
+    <div class="card"><div class="swatch" style="background:#b08968"></div><div><b>8 · Ущелье</b><p>Два хребта и долина к востоку от площадки. Дальше можно набрать высоту.</p></div></div>
+    <div class="card"><div class="swatch" style="background:#8fa85a"></div><div><b>9 · Поля</b><p>Клетки посевов и живые изгороди высотой около 2,5 м.</p></div></div>
+    <div class="card"><div class="swatch" style="background:#3f7f73"></div><div><b>0 · Остров</b><p>Берег, вода вокруг, пирс и холм. Площадка остаётся на суше.</p></div></div>
+  </div>
+  <div class="foot"><span>500 × 500 м</span><span>3</span></div>
+</section>
+
+<section class="page">
+  <div class="kicker">Ручной полёт</div>
+  <h2>Пульт TX12</h2>
+  <div class="split">
+    <img src="radio.jpg" alt="Пульт с двумя стиками">
+    <div>
+      <p class="lead">Режим «1» отдаёт дрон стикам. Пульт должен быть в режиме USB Joystick и подключён до старта. Окно робота в этом режиме показывает те же кнопки.</p>
+      <ul>
+        <li>Кнопка 0 включает моторы.</li>
+        <li>Кнопка 1 даёт взлёт.</li>
+        <li>Посадка: левый стик вниз, пока в консоли не появится LANDED.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note" style="margin-top:8mm">
+    <h3>Если оси на этом пульте другие</h3>
+    <p>Соответствие стиков записано в <b>controllers\mavic_manual\mavic_manual.cfg</b>. Меняются номера осей, программу заново собирать не нужно. Без пульта контроллер сообщит, что джойстик не найден, и не даст включить моторы. Это ожидаемо.</p>
+  </div>
+  <div class="foot"><span>controllers\mavic_manual</span><span>4</span></div>
+</section>
+
+<section class="page">
+  <div class="kicker">Патруль · режимы 1 и 2</div>
+  <h2>Площадь и маршрут</h2>
+  <div class="modes">
+    <article class="mode">
+      <img src="area.jpg" alt="Галсы по прямоугольнику">
+      <div>
+        <div class="tag">1 · Площадная</div>
+        <h3>Район галсами</h3>
+        <p>Четыре угла района. Программа сама строит параллельные проходы и закрывает площадь один раз.</p>
+      </div>
+    </article>
+    <article class="mode">
+      <img src="route.jpg" alt="Полёт вдоль дороги">
+      <div>
+        <div class="tag">2 · Маршрутная</div>
+        <h3>Полоса вдоль дороги</h3>
+        <p>Ломаная, ширина полосы и шаг. Проходы идут ровно через этот шаг. Второй появляется, когда ширина не меньше двух шагов.</p>
+      </div>
+    </article>
+  </div>
+  <div class="note">
+    <p>Сейчас в площадном задании квадрат 40×40 м с шагом 5 м: получается 16 точек. В маршрутном — три точки ломаной и одна полоса шириной 8 м. Высота обоих заданий — 1 м.</p>
+  </div>
+  <div class="foot"><span>missions\area.mission · route.mission</span><span>5</span></div>
+</section>
+
+<section class="page">
+  <div class="kicker">Патруль · режимы 3 и 4</div>
+  <h2>Объект и дозор</h2>
+  <div class="modes">
+    <article class="mode">
+      <img src="object.jpg" alt="Круг вокруг здания">
+      <div>
+        <div class="tag">3 · Объектная</div>
+        <h3>Круги вокруг точки</h3>
+        <p>Центр, радиус и число кругов задаются на панели. Радиус — любое число, которое помещается на карте.</p>
+      </div>
+    </article>
+    <article class="mode">
+      <img src="watch.jpg" alt="Повторный обход периметра">
+      <div>
+        <div class="tag">4 · Дозор</div>
+        <h3>Контур снова и снова</h3>
+        <p>Замкнутая линия и число обходов. Внутрь контура дрон не заходит: он стережёт границу.</p>
+      </div>
+    </article>
+  </div>
+  <div class="note">
+    <p>В файле объекта сейчас центр в 12 м к востоку, радиус 20 м и один круг. Дозор: прямоугольник 24×16 м, два обхода. После «Старт» дрон взлетает, проходит задание, возвращается в точку старта и садится.</p>
+  </div>
+  <div class="foot"><span>missions\object.mission · watch.mission</span><span>6</span></div>
+</section>
+
+<section class="page">
+  <div class="kicker">Полётное задание</div>
+  <h2>Координаты на карте</h2>
+  <div class="axes">
+    <img src="axes.jpg" alt="Оси карты: восток вправо, север вверх">
+    <div>
+      <p class="lead">Ноль — центр площадки, где стоит дрон. Оранжевая стрелка — восток, ось X. Бирюзовая — север, ось Y.</p>
+      <p style="margin-top:3mm;font-size:13px;line-height:1.45">Задание не поворачивается вместе с носом. На панели его ставят кликом по карте, числа востока и севера правят ту же точку. Точки остаются внутри площадки 500×500 м, то есть в пределах ±250 м.</p>
+    </div>
+  </div>
+  <div class="files">
+    <div class="file"><code>area.mission</code><p>Углы района по порядку и шаг галсов <b>lane_spacing</b>.</p></div>
+    <div class="file"><code>route.mission</code><p>Ломаная <b>path</b>, ширина полосы <b>width</b> и шаг.</p></div>
+    <div class="file"><code>object.mission</code><p><b>center</b>, <b>radius</b> и число кругов <b>laps</b>.</p></div>
+    <div class="file"><code>watch.mission</code><p>Контур <b>polygon</b> и число обходов <b>laps</b>.</p></div>
+  </div>
+  <p style="margin-top:4mm;font-size:13px;line-height:1.45">Файлы лежат в <b>controllers\mavic2pro_controller\missions</b> и заполняют панель при открытии. Числа пишут через точку, строка с # — комментарий. Полёт идёт по числам, которые стоят в панели в момент «Старт». Программу заново не собирают. Высота <b>altitude</b> одна на всё задание и считается над площадкой.</p>
+  <div class="foot"><span>X восток · Y север</span><span>7</span></div>
+</section>
+
+<section class="page">
+  <div class="kicker">Что видно в полёте</div>
+  <h2>От старта до посадки</h2>
+  <div class="two">
+    <div class="panel">
+      <h3>Патруль делает сам</h3>
+      <ul>
+        <li>Ждёт на площадке, моторы выключены.</li>
+        <li>После «Старт» печатает режим, числа и число повторов.</li>
+        <li>Повторы проходят в воздухе. Посадка после последнего.</li>
+        <li>«Прервать» возвращает на площадку. «Заново» начинает с первой точки.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>Готовые размеры</h3>
+      <table>
+        <tr><th>Режим</th><th>Сейчас в файле</th></tr>
+        <tr><td>Площадная</td><td>40×40 м, шаг 5 м</td></tr>
+        <tr><td>Маршрутная</td><td>3 точки, полоса 8 м</td></tr>
+        <tr><td>Объектная</td><td>радиус 20 м, 1 круг</td></tr>
+        <tr><td>Дозор</td><td>24×16 м, 2 круга</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="note">
+    <h3>Чтобы показ прошёл спокойно</h3>
+    <p>Готовые задания умещаются на ровной площадке в центре, поэтому на городе и в посёлке дрон не упирается в дома. Если расширить район до улиц, стен и изгородей, они станут препятствиями. Файл <b>mavic2pro_controller.cfg</b> — старый прямоугольник относительно носа: сейчас длина 500 м, ширина 6 м, высота 30 м, шаг 1 м. Пока открыто задание панели, патруль его не берёт.</p>
+  </div>
+  <div class="foot"><span>БПЛА сборка</span><span>8</span></div>
+</section>
+
+</body>
+</html>

@@ -8,11 +8,12 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/project
 
 WorldInfo {
   info [
-    "300 x 300 m city grid. Streets are 12 m. Open square, 48 m, at the origin is the takeoff pad."
-    "Manual flight. Controller: mavic_manual. Same sensors and supervisor flag as mavic_manual.wbt."
-    "Building walls and roofs collide. The square and sidewalks are visual only; the ground plane is flat at z = 0."
+    "500 x 500 m demonstration map. Flat takeoff square, 96 m, at the origin."
+    "Launch bat chooses mavic_manual (TX12) or mavic2pro_controller (patrol)."
+    "Patrol takes off to 1 m, scans a 10 x 10 m rectangle, returns, and lands."
+    "Street grid. Building walls and roofs collide."
   ]
-  title "Mavic city 300 m"
+  title "Город 500 м"
   basicTimeStep 8
   defaultDamping Damping {
     linear 0.5
@@ -21,9 +22,9 @@ WorldInfo {
 }
 Viewpoint {
   orientation -0.11914522061843065 0 0.9928768384869221 2.7
-  position 70.50790028636236 -32.98000317765587 42.0
-  near 0.2
-  far 2500
+  position 120.0 -58.0 70.0
+  near 0.5
+  far 4000
   follow "Mavic 2 PRO"
   followSmoothness 0.25
 }
@@ -32,41 +33,25 @@ TexturedBackground {
 TexturedBackgroundLight {
 }
 Solid {
-  translation 0 0 0
+  translation 0 0 -0.2
   name "ground"
   children [
-    Pose {
-      translation 0 0 -0.2
-      children [
-        Shape {
-          appearance Asphalt {
-            textureTransform TextureTransform {
-              scale 45 45
-            }
-          }
-          geometry Box {
-            size 300 300 0.4
-          }
+    Shape {
+      appearance Asphalt {
+        textureTransform TextureTransform {
+          scale 70 70
         }
-      ]
+      }
+      geometry Box { size 500 500 0.4 }
     }
+  ]
+  boundingObject Box { size 500 500 0.4 }
+}
+Solid {
+  name "sidewalks"
+  children [
     Pose {
-      translation -104.85 0.00 0.02
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColor 0.62 0.62 0.60
-            metalness 0
-            roughness 1
-          }
-          geometry Box {
-            size 2.20 300.00 0.02
-          }
-        }
-      ]
-    }
-    Pose {
-      translation -95.15 0.00 0.02
+      translation -187.50 0.00 0.03
       children [
         Shape {
           appearance PBRAppearance {
@@ -74,14 +59,12 @@ Solid {
             metalness 0
             roughness 1
           }
-          geometry Box {
-            size 2.20 300.00 0.02
-          }
+          geometry Box { size 3.20 500.00 0.02 }
         }
       ]
     }
     Pose {
-      translation 0.00 -104.85 0.02
+      translation 0.00 -187.50 0.03
       children [
         Shape {
           appearance PBRAppearance {
@@ -89,29 +72,12 @@ Solid {
             metalness 0
             roughness 1
           }
-          geometry Box {
-            size 300.00 2.20 0.02
-          }
+          geometry Box { size 500.00 3.20 0.02 }
         }
       ]
     }
     Pose {
-      translation 0.00 -95.15 0.02
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColor 0.62 0.62 0.60
-            metalness 0
-            roughness 1
-          }
-          geometry Box {
-            size 300.00 2.20 0.02
-          }
-        }
-      ]
-    }
-    Pose {
-      translation -100.00 0.00 0.03
+      translation -187.50 0.00 0.05
       children [
         Shape {
           appearance PBRAppearance {
@@ -119,14 +85,12 @@ Solid {
             metalness 0
             roughness 1
           }
-          geometry Box {
-            size 0.16 300.00 0.02
-          }
+          geometry Box { size 0.18 500.00 0.02 }
         }
       ]
     }
     Pose {
-      translation 0.00 -100.00 0.03
+      translation 0.00 -187.50 0.05
       children [
         Shape {
           appearance PBRAppearance {
@@ -134,14 +98,12 @@ Solid {
             metalness 0
             roughness 1
           }
-          geometry Box {
-            size 300.00 0.16 0.02
-          }
+          geometry Box { size 500.00 0.18 0.02 }
         }
       ]
     }
     Pose {
-      translation -54.85 0.00 0.02
+      translation -125.00 0.00 0.03
       children [
         Shape {
           appearance PBRAppearance {
@@ -149,14 +111,12 @@ Solid {
             metalness 0
             roughness 1
           }
-          geometry Box {
-            size 2.20 300.00 0.02
-          }
+          geometry Box { size 3.20 500.00 0.02 }
         }
       ]
     }
     Pose {
-      translation -45.15 0.00 0.02
+      translation 0.00 -125.00 0.03
       children [
         Shape {
           appearance PBRAppearance {
@@ -164,44 +124,12 @@ Solid {
             metalness 0
             roughness 1
           }
-          geometry Box {
-            size 2.20 300.00 0.02
-          }
+          geometry Box { size 500.00 3.20 0.02 }
         }
       ]
     }
     Pose {
-      translation 0.00 -54.85 0.02
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColor 0.62 0.62 0.60
-            metalness 0
-            roughness 1
-          }
-          geometry Box {
-            size 300.00 2.20 0.02
-          }
-        }
-      ]
-    }
-    Pose {
-      translation 0.00 -45.15 0.02
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColor 0.62 0.62 0.60
-            metalness 0
-            roughness 1
-          }
-          geometry Box {
-            size 300.00 2.20 0.02
-          }
-        }
-      ]
-    }
-    Pose {
-      translation -50.00 0.00 0.03
+      translation -125.00 0.00 0.05
       children [
         Shape {
           appearance PBRAppearance {
@@ -209,14 +137,12 @@ Solid {
             metalness 0
             roughness 1
           }
-          geometry Box {
-            size 0.16 300.00 0.02
-          }
+          geometry Box { size 0.18 500.00 0.02 }
         }
       ]
     }
     Pose {
-      translation 0.00 -50.00 0.03
+      translation 0.00 -125.00 0.05
       children [
         Shape {
           appearance PBRAppearance {
@@ -224,14 +150,12 @@ Solid {
             metalness 0
             roughness 1
           }
-          geometry Box {
-            size 300.00 0.16 0.02
-          }
+          geometry Box { size 500.00 0.18 0.02 }
         }
       ]
     }
     Pose {
-      translation -4.85 0.00 0.02
+      translation -62.50 0.00 0.03
       children [
         Shape {
           appearance PBRAppearance {
@@ -239,14 +163,12 @@ Solid {
             metalness 0
             roughness 1
           }
-          geometry Box {
-            size 2.20 300.00 0.02
-          }
+          geometry Box { size 3.20 500.00 0.02 }
         }
       ]
     }
     Pose {
-      translation 4.85 0.00 0.02
+      translation 0.00 -62.50 0.03
       children [
         Shape {
           appearance PBRAppearance {
@@ -254,39 +176,33 @@ Solid {
             metalness 0
             roughness 1
           }
-          geometry Box {
-            size 2.20 300.00 0.02
-          }
+          geometry Box { size 500.00 3.20 0.02 }
         }
       ]
     }
     Pose {
-      translation 0.00 -4.85 0.02
+      translation -62.50 0.00 0.05
       children [
         Shape {
           appearance PBRAppearance {
-            baseColor 0.62 0.62 0.60
+            baseColor 0.90 0.90 0.86
             metalness 0
             roughness 1
           }
-          geometry Box {
-            size 300.00 2.20 0.02
-          }
+          geometry Box { size 0.18 500.00 0.02 }
         }
       ]
     }
     Pose {
-      translation 0.00 4.85 0.02
+      translation 0.00 -62.50 0.05
       children [
         Shape {
           appearance PBRAppearance {
-            baseColor 0.62 0.62 0.60
+            baseColor 0.90 0.90 0.86
             metalness 0
             roughness 1
           }
-          geometry Box {
-            size 300.00 2.20 0.02
-          }
+          geometry Box { size 500.00 0.18 0.02 }
         }
       ]
     }
@@ -295,13 +211,11 @@ Solid {
       children [
         Shape {
           appearance PBRAppearance {
-            baseColor 0.90 0.90 0.86
+            baseColor 0.62 0.62 0.60
             metalness 0
             roughness 1
           }
-          geometry Box {
-            size 0.16 300.00 0.02
-          }
+          geometry Box { size 3.20 500.00 0.02 }
         }
       ]
     }
@@ -310,193 +224,11 @@ Solid {
       children [
         Shape {
           appearance PBRAppearance {
-            baseColor 0.90 0.90 0.86
-            metalness 0
-            roughness 1
-          }
-          geometry Box {
-            size 300.00 0.16 0.02
-          }
-        }
-      ]
-    }
-    Pose {
-      translation 45.15 0.00 0.02
-      children [
-        Shape {
-          appearance PBRAppearance {
             baseColor 0.62 0.62 0.60
             metalness 0
             roughness 1
           }
-          geometry Box {
-            size 2.20 300.00 0.02
-          }
-        }
-      ]
-    }
-    Pose {
-      translation 54.85 0.00 0.02
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColor 0.62 0.62 0.60
-            metalness 0
-            roughness 1
-          }
-          geometry Box {
-            size 2.20 300.00 0.02
-          }
-        }
-      ]
-    }
-    Pose {
-      translation 0.00 45.15 0.02
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColor 0.62 0.62 0.60
-            metalness 0
-            roughness 1
-          }
-          geometry Box {
-            size 300.00 2.20 0.02
-          }
-        }
-      ]
-    }
-    Pose {
-      translation 0.00 54.85 0.02
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColor 0.62 0.62 0.60
-            metalness 0
-            roughness 1
-          }
-          geometry Box {
-            size 300.00 2.20 0.02
-          }
-        }
-      ]
-    }
-    Pose {
-      translation 50.00 0.00 0.03
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColor 0.90 0.90 0.86
-            metalness 0
-            roughness 1
-          }
-          geometry Box {
-            size 0.16 300.00 0.02
-          }
-        }
-      ]
-    }
-    Pose {
-      translation 0.00 50.00 0.03
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColor 0.90 0.90 0.86
-            metalness 0
-            roughness 1
-          }
-          geometry Box {
-            size 300.00 0.16 0.02
-          }
-        }
-      ]
-    }
-    Pose {
-      translation 95.15 0.00 0.02
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColor 0.62 0.62 0.60
-            metalness 0
-            roughness 1
-          }
-          geometry Box {
-            size 2.20 300.00 0.02
-          }
-        }
-      ]
-    }
-    Pose {
-      translation 104.85 0.00 0.02
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColor 0.62 0.62 0.60
-            metalness 0
-            roughness 1
-          }
-          geometry Box {
-            size 2.20 300.00 0.02
-          }
-        }
-      ]
-    }
-    Pose {
-      translation 0.00 95.15 0.02
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColor 0.62 0.62 0.60
-            metalness 0
-            roughness 1
-          }
-          geometry Box {
-            size 300.00 2.20 0.02
-          }
-        }
-      ]
-    }
-    Pose {
-      translation 0.00 104.85 0.02
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColor 0.62 0.62 0.60
-            metalness 0
-            roughness 1
-          }
-          geometry Box {
-            size 300.00 2.20 0.02
-          }
-        }
-      ]
-    }
-    Pose {
-      translation 100.00 0.00 0.03
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColor 0.90 0.90 0.86
-            metalness 0
-            roughness 1
-          }
-          geometry Box {
-            size 0.16 300.00 0.02
-          }
-        }
-      ]
-    }
-    Pose {
-      translation 0.00 100.00 0.03
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColor 0.90 0.90 0.86
-            metalness 0
-            roughness 1
-          }
-          geometry Box {
-            size 300.00 0.16 0.02
-          }
+          geometry Box { size 500.00 3.20 0.02 }
         }
       ]
     }
@@ -505,2144 +237,293 @@ Solid {
       children [
         Shape {
           appearance PBRAppearance {
+            baseColor 0.90 0.90 0.86
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 0.18 500.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 0.00 0.00 0.05
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.90 0.90 0.86
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 500.00 0.18 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 62.50 0.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.62 0.62 0.60
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 3.20 500.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 0.00 62.50 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.62 0.62 0.60
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 500.00 3.20 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 62.50 0.00 0.05
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.90 0.90 0.86
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 0.18 500.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 0.00 62.50 0.05
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.90 0.90 0.86
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 500.00 0.18 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 125.00 0.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.62 0.62 0.60
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 3.20 500.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 0.00 125.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.62 0.62 0.60
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 500.00 3.20 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 125.00 0.00 0.05
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.90 0.90 0.86
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 0.18 500.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 0.00 125.00 0.05
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.90 0.90 0.86
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 500.00 0.18 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 187.50 0.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.62 0.62 0.60
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 3.20 500.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 0.00 187.50 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.62 0.62 0.60
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 500.00 3.20 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 187.50 0.00 0.05
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.90 0.90 0.86
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 0.18 500.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 0.00 187.50 0.05
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.90 0.90 0.86
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 500.00 0.18 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 0.00 0.00 0.06
+      children [
+        Shape {
+          appearance PBRAppearance {
             baseColor 0.58 0.58 0.56
             metalness 0
             roughness 1
           }
-          geometry Box {
-            size 48.00 48.00 0.02
-          }
+          geometry Box { size 96.00 96.00 0.02 }
         }
       ]
     }
   ]
-  boundingObject Pose {
-    translation 0 0 -0.2
-    children [
-      Box {
-        size 300 300 0.4
-      }
-    ]
-  }
 }
 SimpleBuilding {
-  translation -133.74 -136.73 0
+  translation -233.40 -218.85 0
   name "b001"
   floorHeight 3
   floorNumber 5
   corners [
-    8.48 6.53
-    8.48 -6.53
-    -8.48 -6.53
-    -8.48 6.53
+    8.02 23.03
+    8.02 -23.03
+    -8.02 -23.03
+    -8.02 23.03
   ]
   wallType "old building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.90
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -133.28 -115.48 0
-  name "b002"
-  floorHeight 3
-  floorNumber 3
-  corners [
-    7.99 9.08
-    7.99 -9.08
-    -7.99 -9.08
-    -7.99 9.08
-  ]
-  wallType "concrete building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 2.65
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -114.54 -135.29 0
-  name "b003"
-  floorHeight 3
-  floorNumber 4
-  corners [
-    6.59 8.14
-    6.59 -8.14
-    -6.59 -8.14
-    -6.59 8.14
-  ]
-  wallType "orange building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.21
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -114.67 -113.62 0
-  name "b004"
-  floorHeight 3
-  floorNumber 2
-  corners [
-    6.48 6.66
-    6.48 -6.66
-    -6.48 -6.66
-    -6.48 6.66
-  ]
-  wallType "brick building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 4.21
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -135.63 -85.23 0
-  name "b005"
-  floorHeight 3
-  floorNumber 2
-  corners [
-    7.88 7.17
-    7.88 -7.17
-    -7.88 -7.17
-    -7.88 7.17
-  ]
-  wallType "old brick building"
-  roofType "gravel"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -115.23 -84.63 0
-  name "b006"
-  floorHeight 3
-  floorNumber 6
-  corners [
-    7.70 7.62
-    7.70 -7.62
-    -7.70 -7.62
-    -7.70 7.62
-  ]
-  wallType "old brick building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.69
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -134.71 -65.34 0
-  name "b007"
-  floorHeight 3
-  floorNumber 6
-  corners [
-    7.11 7.39
-    7.11 -7.39
-    -7.11 -7.39
-    -7.11 7.39
-  ]
-  wallType "classic building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.51
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -114.09 -65.10 0
-  name "b008"
-  floorHeight 3
-  floorNumber 4
-  corners [
-    7.88 7.97
-    7.88 -7.97
-    -7.88 -7.97
-    -7.88 7.97
-  ]
-  wallType "residential building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.24
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -134.89 -34.80 0
-  name "b009"
-  floorHeight 3
-  floorNumber 2
-  corners [
-    7.32 9.12
-    7.32 -9.12
-    -7.32 -9.12
-    -7.32 9.12
-  ]
-  wallType "old building"
-  roofType "bitumen"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -135.19 -13.53 0
-  name "b010"
-  floorHeight 3
-  floorNumber 6
-  corners [
-    7.63 6.50
-    7.63 -6.50
-    -7.63 -6.50
-    -7.63 6.50
-  ]
-  wallType "office building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.10
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -114.10 -37.01 0
-  name "b011"
-  floorHeight 3
-  floorNumber 4
-  corners [
-    8.03 6.19
-    8.03 -6.19
-    -8.03 -6.19
-    -8.03 6.19
-  ]
-  wallType "office building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 2.62
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -114.56 -17.06 0
-  name "b012"
-  floorHeight 3
-  floorNumber 3
-  corners [
-    8.05 9.96
-    8.05 -9.96
-    -8.05 -9.96
-    -8.05 9.96
-  ]
-  wallType "old office building"
-  roofType "bitumen"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -135.07 14.24 0
-  name "b013"
-  floorHeight 3
-  floorNumber 2
-  corners [
-    8.36 7.58
-    8.36 -7.58
-    -8.36 -7.58
-    -8.36 7.58
-  ]
-  wallType "classic building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.30
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -115.03 14.28 0
-  name "b014"
-  floorHeight 3
-  floorNumber 5
-  corners [
-    7.78 7.93
-    7.78 -7.93
-    -7.78 -7.93
-    -7.78 7.93
-  ]
-  wallType "old office building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 4.25
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -134.57 36.40 0
-  name "b015"
-  floorHeight 3
-  floorNumber 2
-  corners [
-    7.48 7.57
-    7.48 -7.57
-    -7.48 -7.57
-    -7.48 7.57
-  ]
-  wallType "concrete building"
-  roofType "bitumen"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -114.29 35.59 0
-  name "b016"
-  floorHeight 3
-  floorNumber 6
-  corners [
-    7.76 8.18
-    7.76 -8.18
-    -7.76 -8.18
-    -7.76 8.18
-  ]
-  wallType "concrete building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.95
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -134.67 64.61 0
-  name "b017"
-  floorHeight 3
-  floorNumber 4
-  corners [
-    7.76 7.21
-    7.76 -7.21
-    -7.76 -7.21
-    -7.76 7.21
-  ]
-  wallType "residential building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 2.77
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -113.30 64.09 0
-  name "b018"
-  floorHeight 3
-  floorNumber 6
-  corners [
-    7.29 7.45
-    7.29 -7.45
-    -7.29 -7.45
-    -7.29 7.45
-  ]
-  wallType "classic building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.19
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -135.59 85.04 0
-  name "b019"
-  floorHeight 3
-  floorNumber 6
-  corners [
-    8.33 7.31
-    8.33 -7.31
-    -8.33 -7.31
-    -8.33 7.31
-  ]
-  wallType "brick building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 4.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -114.45 85.10 0
-  name "b020"
-  floorHeight 3
-  floorNumber 4
-  corners [
-    8.05 8.36
-    8.05 -8.36
-    -8.05 -8.36
-    -8.05 8.36
-  ]
-  wallType "residential building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 2.92
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -136.52 116.11 0
-  name "b021"
-  floorHeight 3
-  floorNumber 2
-  corners [
-    6.77 9.91
-    6.77 -9.91
-    -6.77 -9.91
-    -6.77 9.91
-  ]
-  wallType "orange building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 4.26
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -135.98 136.49 0
-  name "b022"
-  floorHeight 3
-  floorNumber 6
-  corners [
-    7.85 6.33
-    7.85 -6.33
-    -7.85 -6.33
-    -7.85 6.33
-  ]
-  wallType "old brick building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.16
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -115.35 116.49 0
-  name "b023"
-  floorHeight 3
-  floorNumber 4
-  corners [
-    8.31 9.94
-    8.31 -9.94
-    -8.31 -9.94
-    -8.31 9.94
-  ]
-  wallType "brick building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 2.88
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -114.46 137.45 0
-  name "b024"
-  floorHeight 3
-  floorNumber 6
-  corners [
-    8.37 5.90
-    8.37 -5.90
-    -8.37 -5.90
-    -8.37 5.90
-  ]
-  wallType "orange building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 2.67
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -86.56 -133.97 0
-  name "b025"
-  floorHeight 3
-  floorNumber 5
-  corners [
-    7.24 8.14
-    7.24 -8.14
-    -7.24 -8.14
-    -7.24 8.14
-  ]
-  wallType "classic building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.14
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -86.34 -113.84 0
-  name "b026"
-  floorHeight 3
-  floorNumber 4
-  corners [
-    6.51 6.71
-    6.51 -6.71
-    -6.51 -6.71
-    -6.51 6.71
-  ]
-  wallType "concrete building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.66
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -66.19 -137.35 0
-  name "b027"
-  floorHeight 3
-  floorNumber 3
-  corners [
-    8.76 6.55
-    8.76 -6.55
-    -8.76 -6.55
-    -8.76 6.55
-  ]
-  wallType "classic building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 2.82
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -65.84 -115.38 0
-  name "b028"
-  floorHeight 3
-  floorNumber 4
-  corners [
-    8.66 9.21
-    8.66 -9.21
-    -8.66 -9.21
-    -8.66 9.21
-  ]
-  wallType "old brick building"
-  roofType "bitumen"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -85.79 -84.98 0
-  name "b029"
-  floorHeight 3
-  floorNumber 6
-  corners [
-    7.99 7.35
-    7.99 -7.35
-    -7.99 -7.35
-    -7.99 7.35
-  ]
-  wallType "old brick building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.26
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -64.98 -85.27 0
-  name "b030"
-  floorHeight 3
-  floorNumber 7
-  corners [
-    7.73 8.23
-    7.73 -8.23
-    -7.73 -8.23
-    -7.73 8.23
-  ]
-  wallType "classic building"
-  roofType "bitumen"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -84.32 -64.64 0
-  name "b031"
-  floorHeight 3
-  floorNumber 7
-  corners [
-    7.27 8.61
-    7.27 -8.61
-    -7.27 -8.61
-    -7.27 8.61
-  ]
-  wallType "old office building"
-  roofType "bitumen"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -64.77 -65.09 0
-  name "b032"
-  floorHeight 3
-  floorNumber 3
-  corners [
-    7.31 7.27
-    7.31 -7.27
-    -7.31 -7.27
-    -7.31 7.27
-  ]
-  wallType "residential building"
-  roofType "bitumen"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -86.61 -33.53 0
-  name "b033"
-  floorHeight 3
-  floorNumber 3
-  corners [
-    6.86 9.13
-    6.86 -9.13
-    -6.86 -9.13
-    -6.86 9.13
-  ]
-  wallType "windowed building"
-  roofType "bitumen"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -86.71 -13.51 0
-  name "b034"
-  floorHeight 3
-  floorNumber 8
-  corners [
-    6.68 7.24
-    6.68 -7.24
-    -6.68 -7.24
-    -6.68 7.24
-  ]
-  wallType "highrise"
-  roofType "gravel"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -66.14 -37.17 0
-  name "b035"
-  floorHeight 3
-  floorNumber 7
-  corners [
-    10.07 6.68
-    10.07 -6.68
-    -10.07 -6.68
-    -10.07 6.68
-  ]
-  wallType "office building"
-  roofType "gravel"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -66.99 -15.63 0
-  name "b036"
-  floorHeight 3
-  floorNumber 8
-  corners [
-    8.44 9.57
-    8.44 -9.57
-    -8.44 -9.57
-    -8.44 9.57
-  ]
-  wallType "windowed building"
-  roofType "bitumen"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -85.93 13.78 0
-  name "b037"
-  floorHeight 3
-  floorNumber 3
-  corners [
-    7.47 7.69
-    7.47 -7.69
-    -7.47 -7.69
-    -7.47 7.69
-  ]
-  wallType "highrise"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 4.07
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -86.07 34.21 0
-  name "b038"
-  floorHeight 3
-  floorNumber 3
-  corners [
-    7.77 9.19
-    7.77 -9.19
-    -7.77 -9.19
-    -7.77 9.19
-  ]
-  wallType "classic building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.67
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -64.49 12.99 0
-  name "b039"
-  floorHeight 3
-  floorNumber 11
-  corners [
-    8.29 6.80
-    8.29 -6.80
-    -8.29 -6.80
-    -8.29 6.80
-  ]
-  wallType "blue glass building"
-  roofType "gravel"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -65.78 35.08 0
-  name "b040"
-  floorHeight 3
-  floorNumber 7
-  corners [
-    7.93 8.78
-    7.93 -8.78
-    -7.93 -8.78
-    -7.93 8.78
-  ]
-  wallType "highrise"
-  roofType "gravel"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -85.94 65.56 0
-  name "b041"
-  floorHeight 3
-  floorNumber 8
-  corners [
-    8.01 7.57
-    8.01 -7.57
-    -8.01 -7.57
-    -8.01 7.57
-  ]
-  wallType "office building"
-  roofType "bitumen"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -64.73 64.65 0
-  name "b042"
-  floorHeight 3
-  floorNumber 3
-  corners [
-    8.01 8.48
-    8.01 -8.48
-    -8.01 -8.48
-    -8.01 8.48
-  ]
-  wallType "classic building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 4.23
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -84.35 85.67 0
-  name "b043"
-  floorHeight 3
-  floorNumber 19
-  corners [
-    7.16 8.00
-    7.16 -8.00
-    -7.16 -8.00
-    -7.16 8.00
-  ]
-  wallType "glass highrise"
-  roofType "bitumen"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -64.05 85.57 0
-  name "b044"
-  floorHeight 3
-  floorNumber 4
-  corners [
-    7.25 7.38
-    7.25 -7.38
-    -7.25 -7.38
-    -7.25 7.38
-  ]
-  wallType "office building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.83
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -85.64 114.16 0
-  name "b045"
-  floorHeight 3
-  floorNumber 5
-  corners [
-    8.16 8.10
-    8.16 -8.10
-    -8.16 -8.10
-    -8.16 8.10
-  ]
-  wallType "residential building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 4.10
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -85.63 136.02 0
-  name "b046"
-  floorHeight 3
-  floorNumber 3
-  corners [
-    6.94 7.03
-    6.94 -7.03
-    -6.94 -7.03
-    -6.94 7.03
-  ]
-  wallType "orange building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.61
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -65.77 114.15 0
-  name "b047"
-  floorHeight 3
-  floorNumber 6
-  corners [
-    8.03 8.08
-    8.03 -8.08
-    -8.03 -8.08
-    -8.03 8.08
-  ]
-  wallType "classic building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 2.97
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -64.09 135.51 0
-  name "b048"
-  floorHeight 3
-  floorNumber 4
-  corners [
-    7.85 8.00
-    7.85 -8.00
-    -7.85 -8.00
-    -7.85 8.00
-  ]
-  wallType "old brick building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.79
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -34.61 -134.06 0
-  name "b049"
-  floorHeight 3
-  floorNumber 5
-  corners [
-    8.87 8.54
-    8.87 -8.54
-    -8.87 -8.54
-    -8.87 8.54
-  ]
-  wallType "residential building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.57
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -33.58 -113.63 0
-  name "b050"
-  floorHeight 3
-  floorNumber 3
-  corners [
-    9.30 7.27
-    9.30 -7.27
-    -9.30 -7.27
-    -9.30 7.27
-  ]
-  wallType "classic building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 4.18
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -13.58 -137.01 0
-  name "b051"
-  floorHeight 3
-  floorNumber 2
-  corners [
-    6.87 5.59
-    6.87 -5.59
-    -6.87 -5.59
-    -6.87 5.59
-  ]
-  wallType "residential building"
-  roofType "bitumen"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -13.29 -116.67 0
-  name "b052"
-  floorHeight 3
-  floorNumber 7
-  corners [
-    7.17 10.40
-    7.17 -10.40
-    -7.17 -10.40
-    -7.17 10.40
-  ]
-  wallType "residential building"
-  roofType "bitumen"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -34.51 -83.36 0
-  name "b053"
-  floorHeight 3
-  floorNumber 8
-  corners [
-    9.35 8.47
-    9.35 -8.47
-    -9.35 -8.47
-    -9.35 8.47
-  ]
-  wallType "windowed building"
-  roofType "gravel"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -13.13 -83.53 0
-  name "b054"
-  floorHeight 3
-  floorNumber 3
-  corners [
-    6.72 9.69
-    6.72 -9.69
-    -6.72 -9.69
-    -6.72 9.69
-  ]
-  wallType "residential building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.71
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -33.00 -63.29 0
-  name "b055"
-  floorHeight 3
-  floorNumber 7
-  corners [
-    8.77 6.84
-    8.77 -6.84
-    -8.77 -6.84
-    -8.77 6.84
-  ]
-  wallType "classic building"
-  roofType "gravel"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -12.12 -61.96 0
-  name "b056"
-  floorHeight 3
-  floorNumber 11
-  corners [
-    6.07 5.89
-    6.07 -5.89
-    -6.07 -5.89
-    -6.07 5.89
-  ]
-  wallType "transparent highrise"
-  roofType "gravel"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -34.13 -34.17 0
-  name "b057"
-  floorHeight 3
-  floorNumber 5
-  corners [
-    9.39 9.61
-    9.39 -9.61
-    -9.39 -9.61
-    -9.39 9.61
-  ]
-  wallType "windowed building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.57
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -35.34 -12.93 0
-  name "b058"
-  floorHeight 3
-  floorNumber 7
-  corners [
-    8.61 6.57
-    8.61 -6.57
-    -8.61 -6.57
-    -8.61 6.57
-  ]
-  wallType "concrete building"
-  roofType "gravel"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -15.21 -33.89 0
-  name "b059"
-  floorHeight 3
-  floorNumber 10
-  corners [
-    8.68 8.67
-    8.68 -8.67
-    -8.68 -8.67
-    -8.68 8.67
-  ]
-  wallType "glass highrise"
-  roofType "bitumen"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -33.28 17.17 0
-  name "b060"
-  floorHeight 3
-  floorNumber 11
-  corners [
-    9.26 9.45
-    9.26 -9.45
-    -9.26 -9.45
-    -9.26 9.45
-  ]
-  wallType "gray glass building"
-  roofType "gravel"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -34.33 37.11 0
-  name "b061"
-  floorHeight 3
-  floorNumber 9
-  corners [
-    9.46 6.88
-    9.46 -6.88
-    -9.46 -6.88
-    -9.46 6.88
-  ]
-  wallType "gray glass building"
-  roofType "gravel"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -15.28 33.27 0
-  name "b062"
-  floorHeight 3
-  floorNumber 8
-  corners [
-    8.01 8.63
-    8.01 -8.63
-    -8.01 -8.63
-    -8.01 8.63
-  ]
-  wallType "classic building"
-  roofType "bitumen"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -34.96 66.09 0
-  name "b063"
-  floorHeight 3
-  floorNumber 6
-  corners [
-    8.73 9.98
-    8.73 -9.98
-    -8.73 -9.98
-    -8.73 9.98
-  ]
-  wallType "residential building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 2.61
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -14.59 66.88 0
-  name "b064"
-  floorHeight 3
-  floorNumber 9
-  corners [
-    7.07 8.77
-    7.07 -8.77
-    -7.07 -8.77
-    -7.07 8.77
-  ]
-  wallType "glass highrise"
-  roofType "gravel"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -33.43 87.40 0
-  name "b065"
-  floorHeight 3
-  floorNumber 3
-  corners [
-    9.11 5.84
-    9.11 -5.84
-    -9.11 -5.84
-    -9.11 5.84
-  ]
-  wallType "residential building"
-  roofType "gravel"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -13.60 86.80 0
-  name "b066"
-  floorHeight 3
-  floorNumber 3
-  corners [
-    6.87 7.01
-    6.87 -7.01
-    -6.87 -7.01
-    -6.87 7.01
-  ]
-  wallType "concrete building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 4.03
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -34.15 113.91 0
-  name "b067"
-  floorHeight 3
-  floorNumber 3
-  corners [
-    9.64 7.51
-    9.64 -7.51
-    -9.64 -7.51
-    -9.64 7.51
-  ]
-  wallType "residential building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 4.37
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -13.30 112.65 0
-  name "b068"
-  floorHeight 3
-  floorNumber 3
-  corners [
-    7.08 6.55
-    7.08 -6.55
-    -7.08 -6.55
-    -7.08 6.55
-  ]
-  wallType "windowed building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 4.11
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -36.14 134.09 0
-  name "b069"
-  floorHeight 3
-  floorNumber 6
-  corners [
-    7.04 8.18
-    7.04 -8.18
-    -7.04 -8.18
-    -7.04 8.18
-  ]
-  wallType "orange building"
-  roofType "bitumen"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation -15.43 135.65 0
-  name "b070"
-  floorHeight 3
-  floorNumber 3
-  corners [
-    9.31 7.93
-    9.31 -7.93
-    -9.31 -7.93
-    -9.31 7.93
-  ]
-  wallType "residential building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 2.68
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 16.08 -134.43 0
-  name "b071"
-  floorHeight 3
-  floorNumber 5
-  corners [
-    10.00 9.46
-    10.00 -9.46
-    -10.00 -9.46
-    -10.00 9.46
-  ]
-  wallType "old building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 2.90
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 35.58 -133.50 0
-  name "b072"
-  floorHeight 3
-  floorNumber 5
-  corners [
-    5.95 8.47
-    5.95 -8.47
-    -5.95 -8.47
-    -5.95 8.47
-  ]
-  wallType "office building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.71
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 15.09 -113.88 0
-  name "b073"
-  floorHeight 3
-  floorNumber 6
-  corners [
-    7.34 7.65
-    7.34 -7.65
-    -7.34 -7.65
-    -7.34 7.65
-  ]
-  wallType "highrise"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 4.02
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 33.98 -114.43 0
-  name "b074"
-  floorHeight 3
-  floorNumber 8
-  corners [
-    7.64 6.58
-    7.64 -6.58
-    -7.64 -6.58
-    -7.64 6.58
-  ]
-  wallType "highrise"
-  roofType "bitumen"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 14.85 -83.30 0
-  name "b075"
-  floorHeight 3
-  floorNumber 22
-  corners [
-    7.83 8.20
-    7.83 -8.20
-    -7.83 -8.20
-    -7.83 8.20
-  ]
-  wallType "glass building"
-  roofType "gravel"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 15.52 -64.10 0
-  name "b076"
-  floorHeight 3
-  floorNumber 10
-  corners [
-    7.28 6.72
-    7.28 -6.72
-    -7.28 -6.72
-    -7.28 6.72
-  ]
-  wallType "blue glass building"
-  roofType "bitumen"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 35.27 -86.96 0
-  name "b077"
-  floorHeight 3
-  floorNumber 3
-  corners [
-    8.72 7.03
-    8.72 -7.03
-    -8.72 -7.03
-    -8.72 7.03
-  ]
-  wallType "classic building"
-  roofType "gravel"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 34.98 -66.76 0
-  name "b078"
-  floorHeight 3
-  floorNumber 10
-  corners [
-    7.50 8.66
-    7.50 -8.66
-    -7.50 -8.66
-    -7.50 8.66
-  ]
-  wallType "highrise"
-  roofType "gravel"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 33.98 -36.88 0
-  name "b079"
-  floorHeight 3
-  floorNumber 5
-  corners [
-    9.86 7.01
-    9.86 -7.01
-    -9.86 -7.01
-    -9.86 7.01
-  ]
-  wallType "old office building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.13
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 33.82 -16.34 0
-  name "b080"
-  floorHeight 3
-  floorNumber 6
-  corners [
-    8.71 9.94
-    8.71 -9.94
-    -8.71 -9.94
-    -8.71 9.94
-  ]
-  wallType "concrete building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 4.06
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 14.78 -32.90 0
-  name "b081"
-  floorHeight 3
-  floorNumber 5
-  corners [
-    8.71 8.46
-    8.71 -8.46
-    -8.71 -8.46
-    -8.71 8.46
-  ]
-  wallType "concrete building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 2.74
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 33.95 14.92 0
-  name "b082"
-  floorHeight 3
-  floorNumber 6
-  corners [
-    8.98 7.97
-    8.98 -7.97
-    -8.98 -7.97
-    -8.98 7.97
-  ]
-  wallType "office building"
-  roofType "gravel"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 34.18 36.00 0
-  name "b083"
-  floorHeight 3
-  floorNumber 5
-  corners [
-    8.53 7.97
-    8.53 -7.97
-    -8.53 -7.97
-    -8.53 7.97
-  ]
-  wallType "classic building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.88
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 14.42 32.70 0
-  name "b084"
-  floorHeight 3
-  floorNumber 11
-  corners [
-    7.55 8.62
-    7.55 -8.62
-    -7.55 -8.62
-    -7.55 8.62
-  ]
-  wallType "glass building"
-  roofType "gravel"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 27.94 63.49 0
-  name "b085"
-  floorHeight 3
-  floorNumber 10
-  corners [
-    15.69 6.39
-    15.69 -6.39
-    -15.69 -6.39
-    -15.69 6.39
-  ]
-  wallType "glass building"
-  roofType "bitumen"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 13.09 83.64 0
-  name "b086"
-  floorHeight 3
-  floorNumber 8
-  corners [
-    6.89 9.99
-    6.89 -9.99
-    -6.89 -9.99
-    -6.89 9.99
-  ]
-  wallType "concrete building"
-  roofType "bitumen"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 35.10 84.05 0
-  name "b087"
-  floorHeight 3
-  floorNumber 3
-  corners [
-    8.76 9.52
-    8.76 -9.52
-    -8.76 -9.52
-    -8.76 9.52
-  ]
-  wallType "office building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 4.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 15.56 112.93 0
-  name "b088"
-  floorHeight 3
-  floorNumber 4
-  corners [
-    8.98 6.78
-    8.98 -6.78
-    -8.98 -6.78
-    -8.98 6.78
-  ]
-  wallType "highrise"
-  roofType "bitumen"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 15.15 134.46 0
-  name "b089"
-  floorHeight 3
-  floorNumber 5
-  corners [
-    8.37 9.28
-    8.37 -9.28
-    -8.37 -9.28
-    -8.37 9.28
-  ]
-  wallType "office building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.46
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 36.88 115.69 0
-  name "b090"
-  floorHeight 3
-  floorNumber 3
-  corners [
-    6.46 9.50
-    6.46 -9.50
-    -6.46 -9.50
-    -6.46 9.50
-  ]
-  wallType "residential building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.27
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 36.65 135.94 0
-  name "b091"
-  floorHeight 3
-  floorNumber 3
-  corners [
-    7.19 6.42
-    7.19 -6.42
-    -7.19 -6.42
-    -7.19 6.42
-  ]
-  wallType "classic building"
-  roofType "gravel"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 65.76 -135.38 0
-  name "b092"
-  floorHeight 3
-  floorNumber 5
-  corners [
-    8.86 8.35
-    8.86 -8.35
-    -8.86 -8.35
-    -8.86 8.35
-  ]
-  wallType "old building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 2.68
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 87.22 -135.23 0
-  name "b093"
-  floorHeight 3
-  floorNumber 5
-  corners [
-    6.54 8.03
-    6.54 -8.03
-    -6.54 -8.03
-    -6.54 8.03
-  ]
-  wallType "concrete building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.79
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 64.24 -112.93 0
-  name "b094"
-  floorHeight 3
-  floorNumber 4
-  corners [
-    6.24 6.58
-    6.24 -6.58
-    -6.24 -6.58
-    -6.24 6.58
-  ]
-  wallType "orange building"
-  roofType "gravel"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 84.55 -113.94 0
-  name "b095"
-  floorHeight 3
-  floorNumber 6
-  corners [
-    8.68 7.91
-    8.68 -7.91
-    -8.68 -7.91
-    -8.68 7.91
-  ]
-  wallType "office building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 2.70
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 66.85 -85.76 0
-  name "b096"
-  floorHeight 3
-  floorNumber 7
-  corners [
-    9.36 7.83
-    9.36 -7.83
-    -9.36 -7.83
-    -9.36 7.83
-  ]
-  wallType "old office building"
-  roofType "gravel"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 67.04 -64.87 0
-  name "b097"
-  floorHeight 3
-  floorNumber 7
-  corners [
-    9.19 8.41
-    9.19 -8.41
-    -9.19 -8.41
-    -9.19 8.41
-  ]
-  wallType "classic building"
-  roofType "gravel"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 86.88 -85.91 0
-  name "b098"
-  floorHeight 3
-  floorNumber 4
-  corners [
-    6.71 7.16
-    6.71 -7.16
-    -6.71 -7.16
-    -6.71 7.16
-  ]
-  wallType "concrete building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 4.37
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 86.82 -65.29 0
-  name "b099"
-  floorHeight 3
-  floorNumber 8
-  corners [
-    6.08 8.88
-    6.08 -8.88
-    -6.08 -8.88
-    -6.08 8.88
-  ]
-  wallType "highrise"
-  roofType "bitumen"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 64.56 -35.84 0
-  name "b100"
-  floorHeight 3
-  floorNumber 11
-  corners [
-    7.82 7.55
-    7.82 -7.55
-    -7.82 -7.55
-    -7.82 7.55
-  ]
-  wallType "glass building"
-  roofType "gravel"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 85.50 -36.16 0
-  name "b101"
-  floorHeight 3
-  floorNumber 5
-  corners [
-    7.36 7.47
-    7.36 -7.47
-    -7.36 -7.47
-    -7.36 7.47
-  ]
-  wallType "old office building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 2.83
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 63.95 -14.95 0
-  name "b102"
-  floorHeight 3
-  floorNumber 9
-  corners [
-    7.69 8.16
-    7.69 -8.16
-    -7.69 -8.16
-    -7.69 8.16
-  ]
-  wallType "blue glass building"
-  roofType "bitumen"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 85.10 -14.78 0
-  name "b103"
-  floorHeight 3
-  floorNumber 16
-  corners [
-    8.15 8.44
-    8.15 -8.44
-    -8.15 -8.44
-    -8.15 8.44
-  ]
-  wallType "gray glass building"
-  roofType "bitumen"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 74.05 16.60 0
-  name "b104"
-  floorHeight 3
-  floorNumber 6
-  corners [
-    17.56 10.35
-    17.56 -10.35
-    -17.56 -10.35
-    -17.56 10.35
-  ]
-  wallType "concrete building"
-  roofType "bitumen"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 74.92 36.94 0
-  name "b105"
-  floorHeight 3
-  floorNumber 7
-  corners [
-    18.56 6.12
-    18.56 -6.12
-    -18.56 -6.12
-    -18.56 6.12
-  ]
-  wallType "windowed building"
-  roofType "bitumen"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 65.05 64.84 0
-  name "b106"
-  floorHeight 3
-  floorNumber 7
-  corners [
-    8.12 7.90
-    8.12 -7.90
-    -8.12 -7.90
-    -8.12 7.90
-  ]
-  wallType "residential building"
-  roofType "bitumen"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 84.53 63.35 0
-  name "b107"
-  floorHeight 3
-  floorNumber 4
-  corners [
-    7.33 7.26
-    7.33 -7.26
-    -7.33 -7.26
-    -7.33 7.26
-  ]
-  wallType "concrete building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.53
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 64.47 85.11 0
-  name "b108"
-  floorHeight 3
-  floorNumber 6
-  corners [
-    8.36 8.23
-    8.36 -8.23
-    -8.36 -8.23
-    -8.36 8.23
-  ]
-  wallType "old office building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 4.11
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 86.14 85.27 0
-  name "b109"
-  floorHeight 3
-  floorNumber 3
-  corners [
-    7.56 8.55
-    7.56 -8.55
-    -7.56 -8.55
-    -7.56 8.55
-  ]
-  wallType "old brick building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.12
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 65.40 113.29 0
-  name "b110"
-  floorHeight 3
-  floorNumber 5
-  corners [
-    7.80 7.27
-    7.80 -7.27
-    -7.80 -7.27
-    -7.80 7.27
-  ]
-  wallType "old building"
-  roofType "bitumen"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 86.37 114.36 0
-  name "b111"
-  floorHeight 3
-  floorNumber 6
-  corners [
-    7.57 7.95
-    7.57 -7.95
-    -7.57 -7.95
-    -7.57 7.95
-  ]
-  wallType "old brick building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 2.76
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 63.50 134.66 0
-  name "b112"
-  floorHeight 3
-  floorNumber 2
-  corners [
-    7.27 7.66
-    7.27 -7.66
-    -7.27 -7.66
-    -7.27 7.66
-  ]
-  wallType "residential building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 2.73
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 85.67 135.15 0
-  name "b113"
-  floorHeight 3
-  floorNumber 3
-  corners [
-    7.28 8.34
-    7.28 -8.34
-    -7.28 -8.34
-    -7.28 8.34
-  ]
-  wallType "classic building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.70
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 115.26 -135.40 0
-  name "b114"
-  floorHeight 3
-  floorNumber 5
-  corners [
-    8.00 8.38
-    8.00 -8.38
-    -8.00 -8.38
-    -8.00 8.38
-  ]
-  wallType "office building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.30
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 135.55 -136.07 0
-  name "b115"
-  floorHeight 3
-  floorNumber 5
-  corners [
-    8.37 7.72
-    8.37 -7.72
-    -8.37 -7.72
-    -8.37 7.72
-  ]
-  wallType "residential building"
-  roofType "gravel"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 114.68 -114.30 0
-  name "b116"
-  floorHeight 3
-  floorNumber 5
-  corners [
-    8.60 8.27
-    8.60 -8.27
-    -8.60 -8.27
-    -8.60 8.27
-  ]
-  wallType "brick building"
   roofType "tiled"
   roofShape "hipped roof"
   roofHeight 3.33
   enableBoundingObject TRUE
 }
 SimpleBuilding {
-  translation 135.64 -113.66 0
-  name "b117"
+  translation -207.16 -218.55 0
+  name "b002"
   floorHeight 3
-  floorNumber 3
+  floorNumber 9
   corners [
-    7.29 7.52
-    7.29 -7.52
-    -7.29 -7.52
-    -7.29 7.52
+    11.13 23.04
+    11.13 -23.04
+    -11.13 -23.04
+    -11.13 23.04
   ]
-  wallType "residential building"
+  wallType "windowed building"
   roofType "gravel"
   roofShape "flat roof"
   roofHeight 1.00
   enableBoundingObject TRUE
 }
 SimpleBuilding {
-  translation 114.62 -85.89 0
-  name "b118"
+  translation -230.31 -155.72 0
+  name "b003"
   floorHeight 3
-  floorNumber 6
+  floorNumber 7
   corners [
-    8.59 7.79
-    8.59 -7.79
-    -8.59 -7.79
-    -8.59 7.79
+    11.17 22.47
+    11.17 -22.47
+    -11.17 -22.47
+    -11.17 22.47
   ]
-  wallType "classic building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.32
+  wallType "old brick building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
   enableBoundingObject TRUE
 }
 SimpleBuilding {
-  translation 135.76 -86.46 0
-  name "b119"
+  translation -205.70 -158.46 0
+  name "b004"
   floorHeight 3
-  floorNumber 5
+  floorNumber 9
   corners [
-    8.17 7.10
-    8.17 -7.10
-    -8.17 -7.10
-    -8.17 7.10
+    8.89 20.29
+    8.89 -20.29
+    -8.89 -20.29
+    -8.89 20.29
   ]
   wallType "office building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.49
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
   enableBoundingObject TRUE
 }
 SimpleBuilding {
-  translation 115.16 -64.62 0
-  name "b120"
+  translation -231.37 -106.95 0
+  name "b005"
+  floorHeight 3
+  floorNumber 9
+  corners [
+    10.48 9.82
+    10.48 -9.82
+    -10.48 -9.82
+    -10.48 9.82
+  ]
+  wallType "old office building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -205.64 -107.65 0
+  name "b006"
   floorHeight 3
   floorNumber 4
   corners [
-    8.06 7.30
-    8.06 -7.30
-    -8.06 -7.30
-    -8.06 7.30
-  ]
-  wallType "old building"
-  roofType "bitumen"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 134.16 -65.10 0
-  name "b121"
-  floorHeight 3
-  floorNumber 2
-  corners [
-    7.39 8.07
-    7.39 -8.07
-    -7.39 -8.07
-    -7.39 8.07
-  ]
-  wallType "office building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 4.26
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 115.13 -34.69 0
-  name "b122"
-  floorHeight 3
-  floorNumber 3
-  corners [
-    8.00 8.47
-    8.00 -8.47
-    -8.00 -8.47
-    -8.00 8.47
-  ]
-  wallType "residential building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 4.30
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 115.11 -13.94 0
-  name "b123"
-  floorHeight 3
-  floorNumber 18
-  corners [
-    8.21 7.84
-    8.21 -7.84
-    -8.21 -7.84
-    -8.21 7.84
-  ]
-  wallType "blue glass building"
-  roofType "bitumen"
-  roofShape "flat roof"
-  roofHeight 1.00
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 135.49 -36.80 0
-  name "b124"
-  floorHeight 3
-  floorNumber 5
-  corners [
-    7.98 6.64
-    7.98 -6.64
-    -7.98 -6.64
-    -7.98 6.64
-  ]
-  wallType "orange building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 4.21
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 134.50 -14.03 0
-  name "b125"
-  floorHeight 3
-  floorNumber 6
-  corners [
-    7.13 7.75
-    7.13 -7.75
-    -7.13 -7.75
-    -7.13 7.75
+    10.06 9.22
+    10.06 -9.22
+    -10.06 -9.22
+    -10.06 9.22
   ]
   wallType "old brick building"
   roofType "gravel"
@@ -2651,185 +532,134 @@ SimpleBuilding {
   enableBoundingObject TRUE
 }
 SimpleBuilding {
-  translation 114.90 15.84 0
-  name "b126"
+  translation -232.13 -80.61 0
+  name "b007"
+  floorHeight 3
+  floorNumber 10
+  corners [
+    9.66 9.76
+    9.66 -9.76
+    -9.66 -9.76
+    -9.66 9.76
+  ]
+  wallType "residential building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -207.42 -81.42 0
+  name "b008"
+  floorHeight 3
+  floorNumber 23
+  corners [
+    9.35 10.43
+    9.35 -10.43
+    -9.35 -10.43
+    -9.35 10.43
+  ]
+  wallType "highrise"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -229.17 -31.12 0
+  name "b009"
   floorHeight 3
   floorNumber 8
   corners [
-    7.90 7.41
-    7.90 -7.41
-    -7.90 -7.41
-    -7.90 7.41
+    9.76 23.11
+    9.76 -23.11
+    -9.76 -23.11
+    -9.76 23.11
   ]
-  wallType "classic building"
-  roofType "gravel"
+  wallType "windowed building"
+  roofType "bitumen"
   roofShape "flat roof"
   roofHeight 1.00
   enableBoundingObject TRUE
 }
 SimpleBuilding {
-  translation 136.01 14.61 0
-  name "b127"
+  translation -205.90 -32.38 0
+  name "b010"
   floorHeight 3
-  floorNumber 5
+  floorNumber 12
   corners [
-    7.44 8.58
-    7.44 -8.58
-    -7.44 -8.58
-    -7.44 8.58
+    9.00 22.00
+    9.00 -22.00
+    -9.00 -22.00
+    -9.00 22.00
   ]
-  wallType "brick building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.02
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 116.06 34.56 0
-  name "b128"
-  floorHeight 3
-  floorNumber 3
-  corners [
-    7.20 7.76
-    7.20 -7.76
-    -7.20 -7.76
-    -7.20 7.76
-  ]
-  wallType "office building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 4.18
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 135.57 35.05 0
-  name "b129"
-  floorHeight 3
-  floorNumber 6
-  corners [
-    8.35 7.37
-    8.35 -7.37
-    -8.35 -7.37
-    -8.35 7.37
-  ]
-  wallType "concrete building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.44
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 115.26 64.53 0
-  name "b130"
-  floorHeight 3
-  floorNumber 3
-  corners [
-    8.85 8.00
-    8.85 -8.00
-    -8.85 -8.00
-    -8.85 8.00
-  ]
-  wallType "old building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 4.12
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 115.54 85.40 0
-  name "b131"
-  floorHeight 3
-  floorNumber 6
-  corners [
-    9.02 7.70
-    9.02 -7.70
-    -9.02 -7.70
-    -9.02 7.70
-  ]
-  wallType "office building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 3.93
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 136.81 61.84 0
-  name "b132"
-  floorHeight 3
-  floorNumber 2
-  corners [
-    7.15 5.64
-    7.15 -5.64
-    -7.15 -5.64
-    -7.15 5.64
-  ]
-  wallType "classic building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 4.14
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 136.36 83.81 0
-  name "b133"
-  floorHeight 3
-  floorNumber 4
-  corners [
-    7.25 8.65
-    7.25 -8.65
-    -7.25 -8.65
-    -7.25 8.65
-  ]
-  wallType "old building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 4.11
-  enableBoundingObject TRUE
-}
-SimpleBuilding {
-  translation 114.71 115.60 0
-  name "b134"
-  floorHeight 3
-  floorNumber 4
-  corners [
-    8.32 7.67
-    8.32 -7.67
-    -8.32 -7.67
-    -8.32 7.67
-  ]
-  wallType "old building"
-  roofType "gravel"
+  wallType "old office building"
+  roofType "bitumen"
   roofShape "flat roof"
   roofHeight 1.00
   enableBoundingObject TRUE
 }
 SimpleBuilding {
-  translation 135.47 113.86 0
-  name "b135"
+  translation -231.07 28.67 0
+  name "b011"
   floorHeight 3
-  floorNumber 5
+  floorNumber 7
   corners [
-    8.27 7.16
-    8.27 -7.16
-    -8.27 -7.16
-    -8.27 7.16
+    9.56 20.51
+    9.56 -20.51
+    -9.56 -20.51
+    -9.56 20.51
   ]
-  wallType "classic building"
-  roofType "tiled"
-  roofShape "hipped roof"
-  roofHeight 2.76
+  wallType "orange building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
   enableBoundingObject TRUE
 }
 SimpleBuilding {
-  translation 114.15 135.16 0
-  name "b136"
+  translation -206.06 31.08 0
+  name "b012"
   floorHeight 3
-  floorNumber 3
+  floorNumber 10
   corners [
-    8.05 8.11
-    8.05 -8.11
-    -8.05 -8.11
-    -8.05 8.11
+    10.35 19.92
+    10.35 -19.92
+    -10.35 -19.92
+    -10.35 19.92
+  ]
+  wallType "office building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -218.59 79.80 0
+  name "b013"
+  floorHeight 3
+  floorNumber 12
+  corners [
+    21.26 9.02
+    21.26 -9.02
+    -21.26 -9.02
+    -21.26 9.02
+  ]
+  wallType "classic building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -218.46 106.36 0
+  name "b014"
+  floorHeight 3
+  floorNumber 8
+  corners [
+    21.61 10.06
+    21.61 -10.06
+    -21.61 -10.06
+    -21.61 10.06
   ]
   wallType "concrete building"
   roofType "bitumen"
@@ -2838,25 +668,2287 @@ SimpleBuilding {
   enableBoundingObject TRUE
 }
 SimpleBuilding {
-  translation 135.65 135.73 0
-  name "b137"
+  translation -218.12 144.06 0
+  name "b015"
   floorHeight 3
-  floorNumber 2
+  floorNumber 4
   corners [
-    7.24 8.26
-    7.24 -8.26
-    -7.24 -8.26
-    -7.24 8.26
+    22.31 9.82
+    22.31 -9.82
+    -22.31 -9.82
+    -22.31 9.82
+  ]
+  wallType "brick building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -216.44 169.46 0
+  name "b016"
+  floorHeight 3
+  floorNumber 8
+  corners [
+    19.56 9.89
+    19.56 -9.89
+    -19.56 -9.89
+    -19.56 9.89
+  ]
+  wallType "old office building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -230.96 206.29 0
+  name "b017"
+  floorHeight 3
+  floorNumber 11
+  corners [
+    9.97 10.54
+    9.97 -10.54
+    -9.97 -10.54
+    -9.97 10.54
+  ]
+  wallType "old office building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -206.24 206.17 0
+  name "b018"
+  floorHeight 3
+  floorNumber 12
+  corners [
+    10.66 10.52
+    10.66 -10.52
+    -10.66 -10.52
+    -10.66 10.52
+  ]
+  wallType "office building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -231.54 232.20 0
+  name "b019"
+  floorHeight 3
+  floorNumber 12
+  corners [
+    10.33 9.12
+    10.33 -9.12
+    -10.33 -9.12
+    -10.33 9.12
+  ]
+  wallType "office building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -205.07 231.33 0
+  name "b020"
+  floorHeight 3
+  floorNumber 12
+  corners [
+    9.38 9.23
+    9.38 -9.23
+    -9.38 -9.23
+    -9.38 9.23
+  ]
+  wallType "old office building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -155.78 -232.46 0
+  name "b021"
+  floorHeight 3
+  floorNumber 11
+  corners [
+    21.29 8.11
+    21.29 -8.11
+    -21.29 -8.11
+    -21.29 8.11
+  ]
+  wallType "residential building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -156.61 -207.62 0
+  name "b022"
+  floorHeight 3
+  floorNumber 11
+  corners [
+    22.68 11.53
+    22.68 -11.53
+    -22.68 -11.53
+    -22.68 11.53
+  ]
+  wallType "classic building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -154.24 -167.45 0
+  name "b023"
+  floorHeight 3
+  floorNumber 7
+  corners [
+    21.11 9.74
+    21.11 -9.74
+    -21.11 -9.74
+    -21.11 9.74
+  ]
+  wallType "classic building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -157.28 -143.77 0
+  name "b024"
+  floorHeight 3
+  floorNumber 7
+  corners [
+    22.18 9.21
+    22.18 -9.21
+    -22.18 -9.21
+    -22.18 9.21
+  ]
+  wallType "classic building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -168.33 -93.27 0
+  name "b025"
+  floorHeight 3
+  floorNumber 7
+  corners [
+    11.15 22.22
+    11.15 -22.22
+    -11.15 -22.22
+    -11.15 22.22
+  ]
+  wallType "old building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -143.03 -94.24 0
+  name "b026"
+  floorHeight 3
+  floorNumber 12
+  corners [
+    9.44 22.17
+    9.44 -22.17
+    -9.44 -22.17
+    -9.44 22.17
+  ]
+  wallType "office building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -170.06 -29.21 0
+  name "b027"
+  floorHeight 3
+  floorNumber 11
+  corners [
+    9.38 20.04
+    9.38 -20.04
+    -9.38 -20.04
+    -9.38 20.04
+  ]
+  wallType "old office building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -145.35 -30.60 0
+  name "b028"
+  floorHeight 3
+  floorNumber 5
+  corners [
+    11.67 20.03
+    11.67 -20.03
+    -11.67 -20.03
+    -11.67 20.03
+  ]
+  wallType "residential building"
+  roofType "tiled"
+  roofShape "hipped roof"
+  roofHeight 2.71
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -168.42 31.03 0
+  name "b029"
+  floorHeight 3
+  floorNumber 11
+  corners [
+    10.84 19.78
+    10.84 -19.78
+    -10.84 -19.78
+    -10.84 19.78
+  ]
+  wallType "office building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -143.22 31.34 0
+  name "b030"
+  floorHeight 3
+  floorNumber 6
+  corners [
+    9.75 22.73
+    9.75 -22.73
+    -9.75 -22.73
+    -9.75 22.73
+  ]
+  wallType "old brick building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -167.14 93.75 0
+  name "b031"
+  floorHeight 3
+  floorNumber 11
+  corners [
+    10.99 23.24
+    10.99 -23.24
+    -10.99 -23.24
+    -10.99 23.24
+  ]
+  wallType "concrete building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -142.50 94.88 0
+  name "b032"
+  floorHeight 3
+  floorNumber 10
+  corners [
+    7.96 22.09
+    7.96 -22.09
+    -7.96 -22.09
+    -7.96 22.09
+  ]
+  wallType "residential building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -169.15 155.57 0
+  name "b033"
+  floorHeight 3
+  floorNumber 4
+  corners [
+    9.43 21.43
+    9.43 -21.43
+    -9.43 -21.43
+    -9.43 21.43
   ]
   wallType "orange building"
   roofType "tiled"
   roofShape "hipped roof"
-  roofHeight 4.32
+  roofHeight 3.28
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -143.40 158.08 0
+  name "b034"
+  floorHeight 3
+  floorNumber 6
+  corners [
+    10.19 19.96
+    10.19 -19.96
+    -10.19 -19.96
+    -10.19 19.96
+  ]
+  wallType "classic building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -168.75 206.32 0
+  name "b035"
+  floorHeight 3
+  floorNumber 4
+  corners [
+    10.74 9.73
+    10.74 -9.73
+    -10.74 -9.73
+    -10.74 9.73
+  ]
+  wallType "residential building"
+  roofType "tiled"
+  roofShape "hipped roof"
+  roofHeight 3.77
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -143.80 206.27 0
+  name "b036"
+  floorHeight 3
+  floorNumber 8
+  corners [
+    9.76 10.53
+    9.76 -10.53
+    -9.76 -10.53
+    -9.76 10.53
+  ]
+  wallType "residential building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -168.61 231.10 0
+  name "b037"
+  floorHeight 3
+  floorNumber 4
+  corners [
+    10.40 10.48
+    10.40 -10.48
+    -10.40 -10.48
+    -10.40 10.48
+  ]
+  wallType "old building"
+  roofType "tiled"
+  roofShape "hipped roof"
+  roofHeight 3.69
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -143.78 231.33 0
+  name "b038"
+  floorHeight 3
+  floorNumber 5
+  corners [
+    10.39 10.65
+    10.39 -10.65
+    -10.39 -10.65
+    -10.39 10.65
+  ]
+  wallType "concrete building"
+  roofType "tiled"
+  roofShape "hipped roof"
+  roofHeight 2.94
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -108.68 -216.26 0
+  name "b039"
+  floorHeight 3
+  floorNumber 6
+  corners [
+    8.26 20.76
+    8.26 -20.76
+    -8.26 -20.76
+    -8.26 20.76
+  ]
+  wallType "old building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -82.71 -220.13 0
+  name "b040"
+  floorHeight 3
+  floorNumber 10
+  corners [
+    12.21 20.12
+    12.21 -20.12
+    -12.21 -20.12
+    -12.21 20.12
+  ]
+  wallType "old office building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -104.45 -156.06 0
+  name "b041"
+  floorHeight 3
+  floorNumber 10
+  corners [
+    12.34 22.97
+    12.34 -22.97
+    -12.34 -22.97
+    -12.34 22.97
+  ]
+  wallType "office building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -78.56 -157.98 0
+  name "b042"
+  floorHeight 3
+  floorNumber 11
+  corners [
+    7.92 20.17
+    7.92 -20.17
+    -7.92 -20.17
+    -7.92 20.17
+  ]
+  wallType "concrete building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -93.77 -105.48 0
+  name "b043"
+  floorHeight 3
+  floorNumber 7
+  corners [
+    22.22 10.71
+    22.22 -10.71
+    -22.22 -10.71
+    -22.22 10.71
+  ]
+  wallType "orange building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -92.66 -80.93 0
+  name "b044"
+  floorHeight 3
+  floorNumber 6
+  corners [
+    21.43 10.30
+    21.43 -10.30
+    -21.43 -10.30
+    -21.43 10.30
+  ]
+  wallType "classic building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -91.58 -44.19 0
+  name "b045"
+  floorHeight 3
+  floorNumber 8
+  corners [
+    20.65 10.16
+    20.65 -10.16
+    -20.65 -10.16
+    -20.65 10.16
+  ]
+  wallType "residential building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -93.36 -18.85 0
+  name "b046"
+  floorHeight 3
+  floorNumber 7
+  corners [
+    21.00 9.75
+    21.00 -9.75
+    -21.00 -9.75
+    -21.00 9.75
+  ]
+  wallType "concrete building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -106.25 19.52 0
+  name "b047"
+  floorHeight 3
+  floorNumber 11
+  corners [
+    9.78 9.83
+    9.78 -9.83
+    -9.78 -9.83
+    -9.78 9.83
+  ]
+  wallType "concrete building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -81.20 18.37 0
+  name "b048"
+  floorHeight 3
+  floorNumber 5
+  corners [
+    10.69 10.24
+    10.69 -10.24
+    -10.69 -10.24
+    -10.69 10.24
+  ]
+  wallType "old brick building"
+  roofType "tiled"
+  roofShape "hipped roof"
+  roofHeight 3.38
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -105.98 43.49 0
+  name "b049"
+  floorHeight 3
+  floorNumber 5
+  corners [
+    9.22 10.20
+    9.22 -10.20
+    -9.22 -10.20
+    -9.22 10.20
+  ]
+  wallType "residential building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -79.97 43.74 0
+  name "b050"
+  floorHeight 3
+  floorNumber 7
+  corners [
+    9.23 10.47
+    9.23 -10.47
+    -9.23 -10.47
+    -9.23 10.47
+  ]
+  wallType "old brick building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -105.65 93.79 0
+  name "b051"
+  floorHeight 3
+  floorNumber 11
+  corners [
+    10.54 23.19
+    10.54 -23.19
+    -10.54 -23.19
+    -10.54 23.19
+  ]
+  wallType "classic building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -80.75 93.56 0
+  name "b052"
+  floorHeight 3
+  floorNumber 5
+  corners [
+    9.14 22.89
+    9.14 -22.89
+    -9.14 -22.89
+    -9.14 22.89
+  ]
+  wallType "old brick building"
+  roofType "tiled"
+  roofShape "hipped roof"
+  roofHeight 3.32
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -106.55 143.63 0
+  name "b053"
+  floorHeight 3
+  floorNumber 7
+  corners [
+    10.19 10.50
+    10.19 -10.50
+    -10.19 -10.50
+    -10.19 10.50
+  ]
+  wallType "old building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -82.04 143.66 0
+  name "b054"
+  floorHeight 3
+  floorNumber 5
+  corners [
+    9.75 9.93
+    9.75 -9.93
+    -9.75 -9.93
+    -9.75 9.93
+  ]
+  wallType "orange building"
+  roofType "tiled"
+  roofShape "hipped roof"
+  roofHeight 3.08
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -107.13 167.83 0
+  name "b055"
+  floorHeight 3
+  floorNumber 11
+  corners [
+    9.10 9.06
+    9.10 -9.06
+    -9.10 -9.06
+    -9.10 9.06
+  ]
+  wallType "residential building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -80.76 169.04 0
+  name "b056"
+  floorHeight 3
+  floorNumber 11
+  corners [
+    10.05 9.27
+    10.05 -9.27
+    -10.05 -9.27
+    -10.05 9.27
+  ]
+  wallType "classic building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -104.98 218.77 0
+  name "b057"
+  floorHeight 3
+  floorNumber 5
+  corners [
+    10.89 20.18
+    10.89 -20.18
+    -10.89 -20.18
+    -10.89 20.18
+  ]
+  wallType "old brick building"
+  roofType "tiled"
+  roofShape "hipped roof"
+  roofHeight 3.98
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -80.33 216.97 0
+  name "b058"
+  floorHeight 3
+  floorNumber 11
+  corners [
+    9.17 20.94
+    9.17 -20.94
+    -9.17 -20.94
+    -9.17 20.94
+  ]
+  wallType "windowed building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -44.86 -216.29 0
+  name "b059"
+  floorHeight 3
+  floorNumber 11
+  corners [
+    9.35 19.93
+    9.35 -19.93
+    -9.35 -19.93
+    -9.35 19.93
+  ]
+  wallType "old office building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -19.97 -217.98 0
+  name "b060"
+  floorHeight 3
+  floorNumber 7
+  corners [
+    11.06 21.45
+    11.06 -21.45
+    -11.06 -21.45
+    -11.06 21.45
+  ]
+  wallType "concrete building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -43.21 -154.91 0
+  name "b061"
+  floorHeight 3
+  floorNumber 16
+  corners [
+    9.79 20.66
+    9.79 -20.66
+    -9.79 -20.66
+    -9.79 20.66
+  ]
+  wallType "glass highrise"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -17.77 -157.64 0
+  name "b062"
+  floorHeight 3
+  floorNumber 8
+  corners [
+    9.17 19.63
+    9.17 -19.63
+    -9.17 -19.63
+    -9.17 19.63
+  ]
+  wallType "residential building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -31.28 -107.00 0
+  name "b063"
+  floorHeight 3
+  floorNumber 11
+  corners [
+    22.86 9.87
+    22.86 -9.87
+    -22.86 -9.87
+    -22.86 9.87
+  ]
+  wallType "residential building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -29.29 -82.35 0
+  name "b064"
+  floorHeight 3
+  floorNumber 11
+  corners [
+    20.33 9.52
+    20.33 -9.52
+    -20.33 -9.52
+    -20.33 9.52
+  ]
+  wallType "concrete building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -42.63 94.20 0
+  name "b065"
+  floorHeight 3
+  floorNumber 8
+  corners [
+    11.16 22.79
+    11.16 -22.79
+    -11.16 -22.79
+    -11.16 22.79
+  ]
+  wallType "concrete building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -17.65 95.28 0
+  name "b066"
+  floorHeight 3
+  floorNumber 9
+  corners [
+    8.73 21.61
+    8.73 -21.61
+    -8.73 -21.61
+    -8.73 21.61
+  ]
+  wallType "classic building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -43.21 144.73 0
+  name "b067"
+  floorHeight 3
+  floorNumber 8
+  corners [
+    10.14 9.53
+    10.14 -9.53
+    -10.14 -9.53
+    -10.14 9.53
+  ]
+  wallType "office building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -18.39 143.62 0
+  name "b068"
+  floorHeight 3
+  floorNumber 6
+  corners [
+    9.12 9.61
+    9.12 -9.61
+    -9.12 -9.61
+    -9.12 9.61
+  ]
+  wallType "brick building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -43.68 169.58 0
+  name "b069"
+  floorHeight 3
+  floorNumber 5
+  corners [
+    10.55 9.87
+    10.55 -9.87
+    -10.55 -9.87
+    -10.55 9.87
+  ]
+  wallType "old building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -18.31 169.08 0
+  name "b070"
+  floorHeight 3
+  floorNumber 8
+  corners [
+    10.16 9.75
+    10.16 -9.75
+    -10.16 -9.75
+    -10.16 9.75
+  ]
+  wallType "windowed building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -31.39 205.97 0
+  name "b071"
+  floorHeight 3
+  floorNumber 6
+  corners [
+    22.68 10.42
+    22.68 -10.42
+    -22.68 -10.42
+    -22.68 10.42
+  ]
+  wallType "concrete building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation -32.23 230.78 0
+  name "b072"
+  floorHeight 3
+  floorNumber 12
+  corners [
+    21.97 10.37
+    21.97 -10.37
+    -21.97 -10.37
+    -21.97 10.37
+  ]
+  wallType "concrete building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 32.60 -232.93 0
+  name "b073"
+  floorHeight 3
+  floorNumber 11
+  corners [
+    21.14 8.62
+    21.14 -8.62
+    -21.14 -8.62
+    -21.14 8.62
+  ]
+  wallType "office building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 28.95 -206.92 0
+  name "b074"
+  floorHeight 3
+  floorNumber 7
+  corners [
+    20.38 10.62
+    20.38 -10.62
+    -20.38 -10.62
+    -20.38 10.62
+  ]
+  wallType "concrete building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 16.45 -158.46 0
+  name "b075"
+  floorHeight 3
+  floorNumber 23
+  corners [
+    8.01 20.74
+    8.01 -20.74
+    -8.01 -20.74
+    -8.01 20.74
+  ]
+  wallType "blue glass building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 42.35 -155.87 0
+  name "b076"
+  floorHeight 3
+  floorNumber 8
+  corners [
+    10.70 20.46
+    10.70 -20.46
+    -10.70 -20.46
+    -10.70 20.46
+  ]
+  wallType "windowed building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 20.85 -93.77 0
+  name "b077"
+  floorHeight 3
+  floorNumber 8
+  corners [
+    10.61 23.16
+    10.61 -23.16
+    -10.61 -23.16
+    -10.61 23.16
+  ]
+  wallType "old office building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 46.11 -93.64 0
+  name "b078"
+  floorHeight 3
+  floorNumber 11
+  corners [
+    8.02 20.48
+    8.02 -20.48
+    -8.02 -20.48
+    -8.02 20.48
+  ]
+  wallType "concrete building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 17.73 91.33 0
+  name "b079"
+  floorHeight 3
+  floorNumber 4
+  corners [
+    8.06 19.59
+    8.06 -19.59
+    -8.06 -19.59
+    -8.06 19.59
+  ]
+  wallType "old brick building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 41.71 94.80 0
+  name "b080"
+  floorHeight 3
+  floorNumber 9
+  corners [
+    11.77 22.17
+    11.77 -22.17
+    -11.77 -22.17
+    -11.77 22.17
+  ]
+  wallType "office building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 17.99 144.21 0
+  name "b081"
+  floorHeight 3
+  floorNumber 6
+  corners [
+    9.87 9.25
+    9.87 -9.25
+    -9.87 -9.25
+    -9.87 9.25
+  ]
+  wallType "orange building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 43.05 143.88 0
+  name "b082"
+  floorHeight 3
+  floorNumber 10
+  corners [
+    9.20 10.28
+    9.20 -10.28
+    -9.20 -10.28
+    -9.20 10.28
+  ]
+  wallType "office building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 18.45 168.23 0
+  name "b083"
+  floorHeight 3
+  floorNumber 4
+  corners [
+    9.06 9.12
+    9.06 -9.12
+    -9.06 -9.12
+    -9.06 9.12
+  ]
+  wallType "residential building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 43.45 167.73 0
+  name "b084"
+  floorHeight 3
+  floorNumber 5
+  corners [
+    10.11 9.05
+    10.11 -9.05
+    -10.11 -9.05
+    -10.11 9.05
+  ]
+  wallType "old brick building"
+  roofType "tiled"
+  roofShape "hipped roof"
+  roofHeight 3.82
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 19.14 206.86 0
+  name "b085"
+  floorHeight 3
+  floorNumber 10
+  corners [
+    10.31 9.35
+    10.31 -9.35
+    -10.31 -9.35
+    -10.31 9.35
+  ]
+  wallType "concrete building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 44.73 205.68 0
+  name "b086"
+  floorHeight 3
+  floorNumber 11
+  corners [
+    9.74 10.12
+    9.74 -10.12
+    -9.74 -10.12
+    -9.74 10.12
+  ]
+  wallType "office building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 19.41 231.07 0
+  name "b087"
+  floorHeight 3
+  floorNumber 11
+  corners [
+    9.40 9.15
+    9.40 -9.15
+    -9.40 -9.15
+    -9.40 9.15
+  ]
+  wallType "old office building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 44.50 230.42 0
+  name "b088"
+  floorHeight 3
+  floorNumber 7
+  corners [
+    9.95 9.46
+    9.95 -9.46
+    -9.95 -9.46
+    -9.95 9.46
+  ]
+  wallType "orange building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 80.76 -231.12 0
+  name "b089"
+  floorHeight 3
+  floorNumber 4
+  corners [
+    9.77 10.57
+    9.77 -10.57
+    -9.77 -10.57
+    -9.77 10.57
+  ]
+  wallType "orange building"
+  roofType "tiled"
+  roofShape "hipped roof"
+  roofHeight 3.77
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 106.42 -231.61 0
+  name "b090"
+  floorHeight 3
+  floorNumber 8
+  corners [
+    9.80 10.22
+    9.80 -10.22
+    -9.80 -10.22
+    -9.80 10.22
+  ]
+  wallType "concrete building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 81.13 -206.54 0
+  name "b091"
+  floorHeight 3
+  floorNumber 12
+  corners [
+    10.44 9.93
+    10.44 -9.93
+    -10.44 -9.93
+    -10.44 9.93
+  ]
+  wallType "windowed building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 105.64 -206.70 0
+  name "b092"
+  floorHeight 3
+  floorNumber 6
+  corners [
+    9.60 9.75
+    9.60 -9.75
+    -9.60 -9.75
+    -9.60 9.75
+  ]
+  wallType "concrete building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 90.26 -166.12 0
+  name "b093"
+  floorHeight 3
+  floorNumber 11
+  corners [
+    19.59 10.95
+    19.59 -10.95
+    -19.59 -10.95
+    -19.59 10.95
+  ]
+  wallType "classic building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 92.98 -141.98 0
+  name "b094"
+  floorHeight 3
+  floorNumber 12
+  corners [
+    21.55 7.90
+    21.55 -7.90
+    -21.55 -7.90
+    -21.55 7.90
+  ]
+  wallType "old office building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 80.67 -95.64 0
+  name "b095"
+  floorHeight 3
+  floorNumber 7
+  corners [
+    9.17 19.90
+    9.17 -19.90
+    -9.17 -19.90
+    -9.17 19.90
+  ]
+  wallType "residential building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 105.24 -93.66 0
+  name "b096"
+  floorHeight 3
+  floorNumber 5
+  corners [
+    9.95 23.05
+    9.95 -23.05
+    -9.95 -23.05
+    -9.95 23.05
+  ]
+  wallType "old brick building"
+  roofType "tiled"
+  roofShape "hipped roof"
+  roofHeight 2.93
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 93.50 -43.72 0
+  name "b097"
+  floorHeight 3
+  floorNumber 5
+  corners [
+    21.48 9.69
+    21.48 -9.69
+    -21.48 -9.69
+    -21.48 9.69
+  ]
+  wallType "old building"
+  roofType "tiled"
+  roofShape "hipped roof"
+  roofHeight 2.49
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 93.92 -19.07 0
+  name "b098"
+  floorHeight 3
+  floorNumber 10
+  corners [
+    22.50 9.49
+    22.50 -9.49
+    -22.50 -9.49
+    -22.50 9.49
+  ]
+  wallType "windowed building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 93.80 16.80 0
+  name "b099"
+  floorHeight 3
+  floorNumber 7
+  corners [
+    22.52 8.32
+    22.52 -8.32
+    -22.52 -8.32
+    -22.52 8.32
+  ]
+  wallType "orange building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 92.04 42.42 0
+  name "b100"
+  floorHeight 3
+  floorNumber 7
+  corners [
+    20.77 10.73
+    20.77 -10.73
+    -20.77 -10.73
+    -20.77 10.73
+  ]
+  wallType "brick building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 79.41 93.74 0
+  name "b101"
+  floorHeight 3
+  floorNumber 7
+  corners [
+    8.57 23.17
+    8.57 -23.17
+    -8.57 -23.17
+    -8.57 23.17
+  ]
+  wallType "old brick building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 104.01 94.64 0
+  name "b102"
+  floorHeight 3
+  floorNumber 11
+  corners [
+    10.81 20.21
+    10.81 -20.21
+    -10.81 -20.21
+    -10.81 20.21
+  ]
+  wallType "concrete building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 93.81 143.84 0
+  name "b103"
+  floorHeight 3
+  floorNumber 8
+  corners [
+    23.01 10.69
+    23.01 -10.69
+    -23.01 -10.69
+    -23.01 10.69
+  ]
+  wallType "old office building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 93.33 171.26 0
+  name "b104"
+  floorHeight 3
+  floorNumber 10
+  corners [
+    20.57 7.73
+    20.57 -7.73
+    -20.57 -7.73
+    -20.57 7.73
+  ]
+  wallType "windowed building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 80.97 219.91 0
+  name "b105"
+  floorHeight 3
+  floorNumber 12
+  corners [
+    8.18 19.90
+    8.18 -19.90
+    -8.18 -19.90
+    -8.18 19.90
+  ]
+  wallType "residential building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 104.12 217.78 0
+  name "b106"
+  floorHeight 3
+  floorNumber 12
+  corners [
+    10.54 19.61
+    10.54 -19.61
+    -10.54 -19.61
+    -10.54 19.61
+  ]
+  wallType "old office building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 156.58 -229.57 0
+  name "b107"
+  floorHeight 3
+  floorNumber 12
+  corners [
+    21.05 12.22
+    21.05 -12.22
+    -21.05 -12.22
+    -21.05 12.22
+  ]
+  wallType "classic building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 156.67 -204.18 0
+  name "b108"
+  floorHeight 3
+  floorNumber 11
+  corners [
+    22.15 8.05
+    22.15 -8.05
+    -22.15 -8.05
+    -22.15 8.05
+  ]
+  wallType "old office building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 144.25 -168.98 0
+  name "b109"
+  floorHeight 3
+  floorNumber 16
+  corners [
+    9.57 10.33
+    9.57 -10.33
+    -9.57 -10.33
+    -9.57 10.33
+  ]
+  wallType "highrise"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 167.61 -168.72 0
+  name "b110"
+  floorHeight 3
+  floorNumber 7
+  corners [
+    9.61 10.68
+    9.61 -10.68
+    -9.61 -10.68
+    -9.61 10.68
+  ]
+  wallType "orange building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 143.17 -143.67 0
+  name "b111"
+  floorHeight 3
+  floorNumber 10
+  corners [
+    9.96 10.20
+    9.96 -10.20
+    -9.96 -10.20
+    -9.96 10.20
+  ]
+  wallType "residential building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 167.93 -143.60 0
+  name "b112"
+  floorHeight 3
+  floorNumber 10
+  corners [
+    9.92 10.03
+    9.92 -10.03
+    -9.92 -10.03
+    -9.92 10.03
+  ]
+  wallType "residential building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 145.51 -92.23 0
+  name "b113"
+  floorHeight 3
+  floorNumber 10
+  corners [
+    9.56 19.59
+    9.56 -19.59
+    -9.56 -19.59
+    -9.56 19.59
+  ]
+  wallType "office building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 167.44 -93.03 0
+  name "b114"
+  floorHeight 3
+  floorNumber 6
+  corners [
+    8.77 20.52
+    8.77 -20.52
+    -8.77 -20.52
+    -8.77 20.52
+  ]
+  wallType "concrete building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 156.70 -44.92 0
+  name "b115"
+  floorHeight 3
+  floorNumber 8
+  corners [
+    19.53 8.25
+    19.53 -8.25
+    -19.53 -8.25
+    -19.53 8.25
+  ]
+  wallType "old office building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 155.74 -21.75 0
+  name "b116"
+  floorHeight 3
+  floorNumber 4
+  corners [
+    22.66 10.94
+    22.66 -10.94
+    -22.66 -10.94
+    -22.66 10.94
+  ]
+  wallType "concrete building"
+  roofType "tiled"
+  roofShape "hipped roof"
+  roofHeight 3.24
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 143.49 34.63 0
+  name "b117"
+  floorHeight 3
+  floorNumber 8
+  corners [
+    10.28 19.69
+    10.28 -19.69
+    -10.28 -19.69
+    -10.28 19.69
+  ]
+  wallType "office building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 169.33 33.41 0
+  name "b118"
+  floorHeight 3
+  floorNumber 11
+  corners [
+    9.77 19.56
+    9.77 -19.56
+    -9.77 -19.56
+    -9.77 19.56
+  ]
+  wallType "residential building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 144.34 80.04 0
+  name "b119"
+  floorHeight 3
+  floorNumber 9
+  corners [
+    9.85 9.43
+    9.85 -9.43
+    -9.85 -9.43
+    -9.85 9.43
+  ]
+  wallType "office building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 168.86 81.19 0
+  name "b120"
+  floorHeight 3
+  floorNumber 9
+  corners [
+    10.63 10.65
+    10.63 -10.65
+    -10.63 -10.65
+    -10.63 10.65
+  ]
+  wallType "old office building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 143.92 105.46 0
+  name "b121"
+  floorHeight 3
+  floorNumber 12
+  corners [
+    9.94 9.20
+    9.94 -9.20
+    -9.94 -9.20
+    -9.94 9.20
+  ]
+  wallType "concrete building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 169.56 105.93 0
+  name "b122"
+  floorHeight 3
+  floorNumber 9
+  corners [
+    9.73 9.34
+    9.73 -9.34
+    -9.73 -9.34
+    -9.73 9.34
+  ]
+  wallType "concrete building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 142.29 143.70 0
+  name "b123"
+  floorHeight 3
+  floorNumber 7
+  corners [
+    9.04 10.64
+    9.04 -10.64
+    -9.04 -10.64
+    -9.04 10.64
+  ]
+  wallType "brick building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 168.25 143.57 0
+  name "b124"
+  floorHeight 3
+  floorNumber 4
+  corners [
+    9.65 10.44
+    9.65 -10.44
+    -9.65 -10.44
+    -9.65 10.44
+  ]
+  wallType "residential building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 143.27 168.44 0
+  name "b125"
+  floorHeight 3
+  floorNumber 6
+  corners [
+    9.86 9.85
+    9.86 -9.85
+    -9.86 -9.85
+    -9.86 9.85
+  ]
+  wallType "concrete building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 168.57 168.79 0
+  name "b126"
+  floorHeight 3
+  floorNumber 7
+  corners [
+    10.40 10.34
+    10.40 -10.34
+    -10.40 -10.34
+    -10.40 10.34
+  ]
+  wallType "brick building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 144.88 219.90 0
+  name "b127"
+  floorHeight 3
+  floorNumber 6
+  corners [
+    11.84 21.58
+    11.84 -21.58
+    -11.84 -21.58
+    -11.84 21.58
+  ]
+  wallType "brick building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 169.89 218.28 0
+  name "b128"
+  floorHeight 3
+  floorNumber 5
+  corners [
+    9.61 22.48
+    9.61 -22.48
+    -9.61 -22.48
+    -9.61 22.48
+  ]
+  wallType "concrete building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 207.96 -218.92 0
+  name "b129"
+  floorHeight 3
+  floorNumber 12
+  corners [
+    12.46 22.77
+    12.46 -22.77
+    -12.46 -22.77
+    -12.46 22.77
+  ]
+  wallType "concrete building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 232.24 -221.64 0
+  name "b130"
+  floorHeight 3
+  floorNumber 12
+  corners [
+    7.74 19.87
+    7.74 -19.87
+    -7.74 -19.87
+    -7.74 19.87
+  ]
+  wallType "office building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 205.75 -169.88 0
+  name "b131"
+  floorHeight 3
+  floorNumber 6
+  corners [
+    10.13 9.47
+    10.13 -9.47
+    -10.13 -9.47
+    -10.13 9.47
+  ]
+  wallType "concrete building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 231.38 -168.93 0
+  name "b132"
+  floorHeight 3
+  floorNumber 6
+  corners [
+    10.07 10.06
+    10.07 -10.06
+    -10.07 -10.06
+    -10.07 10.06
+  ]
+  wallType "orange building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 206.50 -143.49 0
+  name "b133"
+  floorHeight 3
+  floorNumber 6
+  corners [
+    9.91 9.17
+    9.91 -9.17
+    -9.91 -9.17
+    -9.91 9.17
+  ]
+  wallType "classic building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 232.04 -143.73 0
+  name "b134"
+  floorHeight 3
+  floorNumber 11
+  corners [
+    9.31 10.71
+    9.31 -10.71
+    -9.31 -10.71
+    -9.31 10.71
+  ]
+  wallType "old office building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 219.42 -105.62 0
+  name "b135"
+  floorHeight 3
+  floorNumber 9
+  corners [
+    22.16 11.22
+    22.16 -11.22
+    -22.16 -11.22
+    -22.16 11.22
+  ]
+  wallType "old office building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 220.39 -80.69 0
+  name "b136"
+  floorHeight 3
+  floorNumber 6
+  corners [
+    20.54 9.67
+    20.54 -9.67
+    -20.54 -9.67
+    -20.54 9.67
+  ]
+  wallType "concrete building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 204.75 -29.44 0
+  name "b137"
+  floorHeight 3
+  floorNumber 12
+  corners [
+    8.91 20.45
+    8.91 -20.45
+    -8.91 -20.45
+    -8.91 20.45
+  ]
+  wallType "old office building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 228.82 -30.35 0
+  name "b138"
+  floorHeight 3
+  floorNumber 7
+  corners [
+    10.84 21.96
+    10.84 -21.96
+    -10.84 -21.96
+    -10.84 21.96
+  ]
+  wallType "residential building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 205.91 31.31 0
+  name "b139"
+  floorHeight 3
+  floorNumber 9
+  corners [
+    9.40 22.44
+    9.40 -22.44
+    -9.40 -22.44
+    -9.40 22.44
+  ]
+  wallType "concrete building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 230.81 33.13 0
+  name "b140"
+  floorHeight 3
+  floorNumber 10
+  corners [
+    9.40 20.24
+    9.40 -20.24
+    -9.40 -20.24
+    -9.40 20.24
+  ]
+  wallType "windowed building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 206.32 80.82 0
+  name "b141"
+  floorHeight 3
+  floorNumber 9
+  corners [
+    10.60 9.35
+    10.60 -9.35
+    -10.60 -9.35
+    -10.60 9.35
+  ]
+  wallType "concrete building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 230.69 80.39 0
+  name "b142"
+  floorHeight 3
+  floorNumber 9
+  corners [
+    9.82 9.45
+    9.82 -9.45
+    -9.82 -9.45
+    -9.82 9.45
+  ]
+  wallType "classic building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 206.57 106.14 0
+  name "b143"
+  floorHeight 3
+  floorNumber 4
+  corners [
+    10.25 9.14
+    10.25 -9.14
+    -10.25 -9.14
+    -10.25 9.14
+  ]
+  wallType "old brick building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 231.15 106.20 0
+  name "b144"
+  floorHeight 3
+  floorNumber 5
+  corners [
+    9.38 10.47
+    9.38 -10.47
+    -9.38 -10.47
+    -9.38 10.47
+  ]
+  wallType "orange building"
+  roofType "bitumen"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 219.68 144.28 0
+  name "b145"
+  floorHeight 3
+  floorNumber 5
+  corners [
+    20.57 9.53
+    20.57 -9.53
+    -20.57 -9.53
+    -20.57 9.53
+  ]
+  wallType "old building"
+  roofType "tiled"
+  roofShape "hipped roof"
+  roofHeight 3.55
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 215.67 168.26 0
+  name "b146"
+  floorHeight 3
+  floorNumber 6
+  corners [
+    20.01 9.68
+    20.01 -9.68
+    -20.01 -9.68
+    -20.01 9.68
+  ]
+  wallType "residential building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 216.45 207.43 0
+  name "b147"
+  floorHeight 3
+  floorNumber 6
+  corners [
+    20.50 11.48
+    20.50 -11.48
+    -20.50 -11.48
+    -20.50 11.48
+  ]
+  wallType "classic building"
+  roofType "gravel"
+  roofShape "flat roof"
+  roofHeight 1.00
+  enableBoundingObject TRUE
+}
+SimpleBuilding {
+  translation 217.96 233.13 0
+  name "b148"
+  floorHeight 3
+  floorNumber 5
+  corners [
+    21.73 8.17
+    21.73 -8.17
+    -21.73 -8.17
+    -21.73 8.17
+  ]
+  wallType "orange building"
+  roofType "tiled"
+  roofShape "hipped roof"
+  roofHeight 2.56
   enableBoundingObject TRUE
 }
 Mavic2Pro {
   translation 0 0 0.1
   controller "mavic_manual"
+  window "mavic_panel"
   supervisor TRUE
   bodySlot [
     Accelerometer {

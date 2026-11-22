@@ -29,6 +29,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <webots/plugins/robot_window/robot_wwi.h>
 #include <webots/robot.h>
 
 static int run_self_tests(void) {
@@ -129,6 +130,17 @@ int main(int argc, char **argv) {
         dt = step_s;
     }
     previous_time = now;
+
+    {
+      const char *panel_message;
+      static double next_panel = 0.0;
+      while ((panel_message = wb_robot_wwi_receive_text()) != NULL && panel_message[0] != '\0') {
+      }
+      if (now + 1e-9 >= next_panel) {
+        wb_robot_wwi_send_text("ready manual");
+        next_panel = now + 2.0;
+      }
+    }
 
     sensors_read(&sensors, &cfg);
     airborne = (safety.state == FS_TAKEOFF || safety.state == FS_FLIGHT || safety.state == FS_POSITION_HOLD ||

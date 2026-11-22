@@ -36,6 +36,7 @@
 #include <webots/gyro.h>
 #include <webots/inertial_unit.h>
 #include <webots/motor.h>
+#include <webots/plugins/robot_window/robot_wwi.h>
 #include <webots/robot.h>
 
 #ifndef M_PI
@@ -129,6 +130,7 @@ typedef enum {
   RETURN_HOME,
   LANDING,
   LANDED,
+  WAIT,
   EMERGENCY
 } MissionState;
 
@@ -210,10 +212,24 @@ static double task_spacing = 5.0;
 static double task_width = 0.0;
 static double task_radius = 8.0;
 static int task_laps = 1;
+static int task_repeats = 1;
+static int repeat_done = 0;
+static int abort_to_wait = 0;
+static char pending_start[1200];
+static int pending_kind = 0;
+static double next_panel_cfg = 0.0;
 static double task_cx = 0.0;
 static double task_cy = 0.0;
 static Waypoint shape[MAX_SHAPE];
 static int shape_count = 0;
+static int saw_altitude = 0;
+static int saw_spacing = 0;
+static int saw_width = 0;
+static int saw_radius = 0;
+static int saw_laps = 0;
+static int saw_center = 0;
+static int saw_polygon = 0;
+static int saw_path = 0;
 
 static int origin_valid = 0;
 static int motors_enabled = 0;
@@ -274,6 +290,8 @@ static const char *state_name(MissionState mission) {
       return "LANDING";
     case LANDED:
       return "LANDED";
+    case WAIT:
+      return "WAIT";
     case EMERGENCY:
       return "EMERGENCY";
     default:
@@ -554,6 +572,7 @@ static int apply_task_key(const char *key, const char *text, int line_no) {
       return 0;
     }
     flight_altitude = value;
+    saw_altitude = 1;
     return 1;
   }
   if (strcmp(key, "lane_spacing") == 0) {
@@ -562,6 +581,7 @@ static int apply_task_key(const char *key, const char *text, int line_no) {
       return 0;
     }
     task_spacing = value;
+    saw_spacing = 1;
     return 1;
   }
   if (strcmp(key, "width") == 0) {
@@ -570,6 +590,7 @@ static int apply_task_key(const char *key, const char *text, int line_no) {
       return 0;
     }
     task_width = value;
+    saw_width = 1;
     return 1;
   }
   if (strcmp(key, "radius") == 0) {
@@ -578,6 +599,7 @@ static int apply_task_key(const char *key, const char *text, int line_no) {
       return 0;
     }
     task_radius = value;
+    saw_radius = 1;
     return 1;
   }
   if (strcmp(key, "laps") == 0) {
@@ -586,6 +608,7 @@ static int apply_task_key(const char *key, const char *text, int line_no) {
       return 0;
     }
     task_laps = (int)(value + 0.5);
+    saw_laps = 1;
     return 1;
   }
   if (strcmp(key, "center") == 0) {
@@ -593,40 +616,105 @@ static int apply_task_key(const char *key, const char *text, int line_no) {
       fprintf(stderr, "mavic2pro_controller: bad center on line %d.\n", line_no);
       return 0;
     }
+    saw_center = 1;
     return 1;
   }
-  if (strcmp(key, "polygon") == 0 || strcmp(key, "path") == 0)
+  if (strcmp(key, "polygon") == 0) {
+    saw_polygon = 1;
     return 1;
+  }
+  if (strcmp(key, "path") == 0) {
+    saw_path = 1;
+    return 1;
+  }
   fprintf(stderr, "mavic2pro_controller: unknown key \"%s\" on line %d.\n", key, line_no);
   return 0;
 }
 
-static int task_shape_ok(void) {
-  int i;
+static int key_unused(const char *key) {
+  fprintf(stderr, "mavic2pro_controller: \"%s\" is not used by this mode.\n", key);
+  return 0;
+}
 
-  if (task_kind == TASK_LEGACY)
+static int task_shape_ok(const char *selected) {
+  int i;
+  const char *mode_name = NULL;
+
+  if (task_kind == TASK_AREA)
+    mode_name = "area";
+  else if (task_kind == TASK_ROUTE)
+    mode_name = "route";
+  else if (task_kind == TASK_OBJECT)
+    mode_name = "object";
+  else if (task_kind == TASK_WATCH)
+    mode_name = "watch";
+  if (!mode_name) {
+    fprintf(stderr, "mavic2pro_controller: the task file needs mode = %s.\n", selected);
     return 0;
-  if (!(flight_altitude > 0.0))
+  }
+  if (strcmp(mode_name, selected) != 0) {
+    fprintf(stderr, "mavic2pro_controller: mode is %s, but the selected file is %s.\n", mode_name, selected);
     return 0;
-  if (task_kind == TASK_OBJECT) {
-    if (!(task_radius > 0.0) || task_laps < 1)
+  }
+  if (!saw_altitude || !(flight_altitude > 0.0)) {
+    fprintf(stderr, "mavic2pro_controller: altitude is required.\n");
+    return 0;
+  }
+  if (task_kind == TASK_AREA) {
+    if (saw_width || saw_radius || saw_laps || saw_center || saw_path)
+      return key_unused(saw_path ? "path" : (saw_width ? "width" : (saw_radius ? "radius" : (saw_laps ? "laps" : "center"))));
+    if (!saw_polygon || !saw_spacing || shape_count < 3) {
+      fprintf(stderr, "mavic2pro_controller: area needs polygon and lane_spacing.\n");
       return 0;
+    }
+  } else if (task_kind == TASK_ROUTE) {
+    if (saw_polygon || saw_radius || saw_laps || saw_center)
+      return key_unused(saw_polygon ? "polygon" : (saw_radius ? "radius" : (saw_laps ? "laps" : "center")));
+    if (!saw_path || !saw_width || !saw_spacing || shape_count < 2) {
+      fprintf(stderr, "mavic2pro_controller: route needs path, width and lane_spacing.\n");
+      return 0;
+    }
+  } else if (task_kind == TASK_OBJECT) {
+    if (saw_polygon || saw_path || saw_width || saw_spacing)
+      return key_unused(saw_polygon ? "polygon" : (saw_path ? "path" : (saw_width ? "width" : "lane_spacing")));
+    if (!saw_center || !saw_radius || !saw_laps || !(task_radius > 0.0)) {
+      fprintf(stderr, "mavic2pro_controller: object needs center, radius and laps.\n");
+      return 0;
+    }
     if (!inside_map(task_cx - task_radius, task_cy) || !inside_map(task_cx + task_radius, task_cy) ||
         !inside_map(task_cx, task_cy - task_radius) || !inside_map(task_cx, task_cy + task_radius)) {
       fprintf(stderr, "mavic2pro_controller: the orbit does not fit on the map.\n");
       return 0;
     }
     return 1;
-  }
-  if (shape_count < 2 || (task_kind != TASK_ROUTE && shape_count < 3)) {
-    fprintf(stderr, "mavic2pro_controller: the task needs more points.\n");
-    return 0;
+  } else {
+    if (saw_path || saw_width || saw_spacing || saw_radius || saw_center)
+      return key_unused(saw_path ? "path" : (saw_width ? "width" : (saw_spacing ? "lane_spacing" : (saw_radius ? "radius" : "center"))));
+    if (!saw_polygon || !saw_laps || shape_count < 3) {
+      fprintf(stderr, "mavic2pro_controller: watch needs polygon and laps.\n");
+      return 0;
+    }
   }
   for (i = 0; i < shape_count; ++i) {
     if (!inside_map(shape[i].x, shape[i].y))
       return 0;
   }
   return 1;
+}
+
+static void print_task_values(void) {
+  if (task_kind == TASK_AREA)
+    printf("Параметры: высота %.2f м, шаг %.2f м, углов %d.\n", flight_altitude, task_spacing, shape_count);
+  else if (task_kind == TASK_ROUTE)
+    printf("Параметры: высота %.2f м, ширина полосы %.2f м, шаг %.2f м, точек линии %d.\n",
+           flight_altitude, task_width, task_spacing, shape_count);
+  else if (task_kind == TASK_OBJECT)
+    printf("Параметры: высота %.2f м, центр %.2f %.2f, радиус %.2f м, кругов %d.\n",
+           flight_altitude, task_cx, task_cy, task_radius, task_laps);
+  else if (task_kind == TASK_WATCH)
+    printf("Параметры: высота %.2f м, обходов %d, вершин %d.\n", flight_altitude, task_laps, shape_count);
+  printf("Повторов задания: %d.\n", task_repeats);
+  fflush(stdout);
 }
 
 /* Returns 1 when mission.txt selected a task, including a task that failed to load. */
@@ -715,14 +803,16 @@ static int load_task(void) {
   }
   fclose(file);
 
-  if (!points_ok || !task_shape_ok()) {
+  if (shape_count >= 2 && hypot(shape[shape_count - 1].x - shape[0].x, shape[shape_count - 1].y - shape[0].y) < 0.05)
+    --shape_count;
+  if (!points_ok || !task_shape_ok(name)) {
     task_failed = 1;
     fprintf(stderr, "mavic2pro_controller: task was not accepted.\n");
     return 1;
   }
   task_ready = 1;
   printf("Режим: %s\n", task_title(task_kind));
-  fflush(stdout);
+  print_task_values();
   return 1;
 }
 
@@ -966,13 +1056,14 @@ static int build_route_task(void) {
   int lane;
   int forward = 1;
 
-  if (task_width > task_spacing && task_spacing > 0.0) {
-    lanes = (int)ceil(task_width / task_spacing - 1e-6);
-    if (lanes < 1)
-      lanes = 1;
+  if (task_width >= 2.0 * task_spacing && task_spacing > 0.0) {
+    lanes = (int)floor(task_width / task_spacing + 1e-6);
+    if (lanes < 2)
+      lanes = 2;
   }
   for (lane = 0; lane < lanes; ++lane) {
     double offset = 0.0;
+    double span = (double)(lanes - 1) * task_spacing;
     Waypoint shifted[MAX_SHAPE];
     int i;
     int begin;
@@ -980,7 +1071,7 @@ static int build_route_task(void) {
     int end;
 
     if (lanes > 1)
-      offset = -task_width * 0.5 + ((double)lane + 0.5) * (task_width / (double)lanes);
+      offset = -span * 0.5 + (double)lane * task_spacing;
     for (i = 0; i < shape_count; ++i) {
       double nx = 0.0;
       double ny = 0.0;
@@ -1483,21 +1574,267 @@ static void enter_landing(int chase_home) {
 static void finish_landing(void) {
   motors_enabled = 0;
   motors_off();
-  state = LANDED;
-  if (mission_announced)
-    return;
-  mission_announced = 1;
-  if (mission_ok && land_chase) {
-    printf("Mission completed successfully.\n");
+  if (!mission_announced) {
+    mission_announced = 1;
+    if (abort_to_wait) {
+      printf("Посадка после прерывания. Можно начать задание заново.\n");
+      abort_to_wait = 0;
+    } else if (mission_ok && land_chase) {
+      printf("Mission completed successfully.\n");
+    } else if (!incomplete_reported) {
+      fprintf(stderr, "mavic2pro_controller: motors disabled. The mission did not finish the scan.\n");
+      incomplete_reported = 1;
+    }
     fflush(stdout);
-  } else if (!incomplete_reported) {
-    fprintf(stderr, "mavic2pro_controller: motors disabled. The mission did not finish the scan.\n");
-    incomplete_reported = 1;
+  }
+  state = WAIT;
+  next_panel_cfg = wb_robot_get_time();
+}
+
+static void ensure_panel_defaults(void) {
+  if (task_ready)
+    return;
+  task_kind = TASK_AREA;
+  flight_altitude = 1.0;
+  task_spacing = 5.0;
+  task_width = 8.0;
+  task_radius = 6.0;
+  task_laps = 1;
+  task_cx = 12.0;
+  task_cy = 0.0;
+  shape_count = 4;
+  shape[0].x = -20.0;
+  shape[0].y = -20.0;
+  shape[1].x = 20.0;
+  shape[1].y = -20.0;
+  shape[2].x = 20.0;
+  shape[2].y = 20.0;
+  shape[3].x = -20.0;
+  shape[3].y = 20.0;
+  task_ready = 1;
+}
+
+static void send_panel_cfg(void) {
+  char points[900];
+  char msg[1200];
+  int i;
+  int used = 0;
+  const char *mode = "area";
+
+  if (task_kind == TASK_ROUTE)
+    mode = "route";
+  else if (task_kind == TASK_OBJECT)
+    mode = "object";
+  else if (task_kind == TASK_WATCH)
+    mode = "watch";
+  points[0] = '\0';
+  for (i = 0; i < shape_count; ++i) {
+    char one[64];
+    int wrote = snprintf(one, sizeof(one), "%s%.2f %.2f", i ? ";" : "", shape[i].x, shape[i].y);
+    if (wrote < 0 || used + wrote >= (int)sizeof(points))
+      break;
+    memcpy(points + used, one, (size_t)wrote + 1);
+    used += wrote;
+  }
+  snprintf(msg, sizeof(msg), "cfg|%s|%.2f|%.2f|%.2f|%.2f|%d|%.2f %.2f|%d|%s", mode, flight_altitude, task_spacing,
+           task_width, task_radius, task_laps, task_cx, task_cy, task_repeats, points);
+  wb_robot_wwi_send_text("ready patrol");
+  wb_robot_wwi_send_text(msg);
+}
+
+static int flying_now(void) {
+  return state == TAKEOFF || state == HOVER || state == ZIGZAG_SCAN || state == RETURN_HOME || state == LANDING ||
+         (state == EMERGENCY && motors_enabled);
+}
+
+static void complete_pass(double time) {
+  repeat_done++;
+  if (repeat_done < task_repeats && waypoint_count > 0) {
+    printf("Проход %d из %d выполнен. Начинается следующий.\n", repeat_done, task_repeats);
+    fflush(stdout);
+    waypoint_index = 0;
+    arm_timer(time, waypoints[0].x, waypoints[0].y);
+    return;
+  }
+  mission_ok = 1;
+  enter_return(time);
+}
+
+static void request_abort(double time) {
+  abort_to_wait = 1;
+  mission_ok = 0;
+  if (!flying_now()) {
+    motors_enabled = 0;
+    motors_off();
+    abort_to_wait = 0;
+    state = WAIT;
+    printf("Задание прервано. Дрон ждёт на площадке.\n");
+    fflush(stdout);
+    wb_robot_wwi_send_text("state WAIT");
+    return;
+  }
+  printf("Задание прервано. Возврат и посадка.\n");
+  fflush(stdout);
+  if (state == LANDING)
+    return;
+  if (nav.position_reliable)
+    enter_return(time);
+  else
+    enter_landing(0);
+}
+
+static int start_from_panel(const char *message) {
+  char buffer[1200];
+  char *field[10];
+  int count = 0;
+  char *cursor;
+  const char *mode;
+  double value;
+  int from_air;
+
+  if (strncmp(message, "start|", 6) != 0)
+    return 0;
+  strncpy(buffer, message, sizeof(buffer) - 1);
+  buffer[sizeof(buffer) - 1] = '\0';
+  cursor = buffer;
+  field[count++] = cursor;
+  for (; *cursor != '\0' && count < 10; ++cursor) {
+    if (*cursor == '|') {
+      *cursor = '\0';
+      field[count++] = cursor + 1;
+    }
+  }
+  if (count != 10) {
+    wb_robot_wwi_send_text("error Неполная команда панели.");
+    return 0;
+  }
+  mode = field[1];
+  saw_altitude = saw_spacing = saw_width = saw_radius = saw_laps = saw_center = saw_polygon = saw_path = 0;
+  shape_count = 0;
+  if (strcmp(mode, "area") == 0)
+    task_kind = TASK_AREA;
+  else if (strcmp(mode, "route") == 0)
+    task_kind = TASK_ROUTE;
+  else if (strcmp(mode, "object") == 0)
+    task_kind = TASK_OBJECT;
+  else if (strcmp(mode, "watch") == 0)
+    task_kind = TASK_WATCH;
+  else {
+    wb_robot_wwi_send_text("error Неизвестный режим. Пульт TX12 выбирается в Запуск.bat.");
+    return 0;
+  }
+  if (!parse_number(field[2], &value) || !(value > 0.0) || value > 80.0) {
+    wb_robot_wwi_send_text("error Высота должна быть от 0 до 80 м.");
+    return 0;
+  }
+  flight_altitude = value;
+  saw_altitude = 1;
+  if (!parse_number(field[3], &task_spacing) || !(task_spacing > 0.0))
+    task_spacing = 5.0;
+  if (!parse_number(field[4], &task_width) || task_width < 0.0)
+    task_width = 0.0;
+  if (!parse_number(field[5], &task_radius) || !(task_radius > 0.0))
+    task_radius = 6.0;
+  if (!parse_number(field[6], &value) || value < 1.0 || value > 20.0)
+    task_laps = 1;
+  else
+    task_laps = (int)(value + 0.5);
+  if (!parse_number(field[8], &value) || value < 1.0 || value > 20.0) {
+    wb_robot_wwi_send_text("error Повторы задания — число от 1 до 20.");
+    return 0;
+  }
+  task_repeats = (int)(value + 0.5);
+  if (field[7][0] == '\0') {
+    task_cx = 12.0;
+    task_cy = 0.0;
+  } else if (!parse_pair(field[7], &task_cx, &task_cy) || !inside_map(task_cx, task_cy)) {
+    wb_robot_wwi_send_text("error Центр должен быть парой чисел внутри карты.");
+    return 0;
+  }
+  if (field[9][0] != '\0') {
+    char *token = field[9];
+    while (token && *token) {
+      char *next = strchr(token, ';');
+      double x;
+      double y;
+      if (next)
+        *next = '\0';
+      trim_line(token);
+      if (token[0] && parse_pair(token, &x, &y)) {
+        if (!add_shape_point(x, y, 0)) {
+          wb_robot_wwi_send_text("error Точка за пределами карты 500 м.");
+          return 0;
+        }
+      }
+      token = next ? next + 1 : NULL;
+    }
+  }
+  if (task_kind == TASK_AREA) {
+    saw_spacing = 1;
+    saw_polygon = 1;
+  } else if (task_kind == TASK_ROUTE) {
+    saw_spacing = 1;
+    saw_width = 1;
+    saw_path = 1;
+  } else if (task_kind == TASK_OBJECT) {
+    saw_radius = 1;
+    saw_laps = 1;
+    saw_center = 1;
+  } else {
+    saw_laps = 1;
+    saw_polygon = 1;
+  }
+  if (!task_shape_ok(mode)) {
+    wb_robot_wwi_send_text("error Проверьте точки и числа этого режима.");
+    return 0;
+  }
+  flight_z = home_alt + flight_altitude;
+  if (!build_task_waypoints()) {
+    wb_robot_wwi_send_text("error Маршрут не построен.");
+    return 0;
+  }
+  from_air = flying_now() && isfinite(nav.alt) && nav.alt > home_alt + 0.35;
+  waypoint_index = 0;
+  repeat_done = 0;
+  phase_start = -1.0;
+  hover_timer = 0.0;
+  mission_ok = 0;
+  mission_announced = 0;
+  abort_to_wait = 0;
+  return_abandoned = 0;
+  incomplete_reported = 0;
+  fatal_failure = 0;
+  if (from_air) {
+    motors_enabled = 1;
+    arm_timer(wb_robot_get_time(), waypoints[0].x, waypoints[0].y);
+    state = ZIGZAG_SCAN;
+    printf("Задание начато заново с первой точки.\n");
+    fflush(stdout);
+    wb_robot_wwi_send_text("state ZIGZAG_SCAN");
+  } else {
+    state = READY;
+    wb_robot_wwi_send_text("state READY");
+  }
+  return 1;
+}
+
+static void poll_panel(void) {
+  const char *message;
+  while ((message = wb_robot_wwi_receive_text()) != NULL && message[0] != '\0') {
+    printf("panel <- %.240s\n", message);
+    fflush(stdout);
+    if (strcmp(message, "abort") == 0) {
+      pending_kind = 2;
+    } else if (strncmp(message, "start|", 6) == 0) {
+      strncpy(pending_start, message, sizeof(pending_start) - 1);
+      pending_start[sizeof(pending_start) - 1] = '\0';
+      pending_kind = 1;
+    }
   }
 }
 
 static void update_mission(double time, double dt) {
-  if (state != INITIALIZATION && state != LANDED) {
+  if (state != INITIALIZATION && state != LANDED && state != WAIT) {
     if (bad_attitude_time > ATTITUDE_FAIL_TIME) {
       if (!fatal_reported) {
         fprintf(stderr,
@@ -1520,6 +1857,17 @@ static void update_mission(double time, double dt) {
     }
   }
 
+  if (pending_kind == 2) {
+    pending_kind = 0;
+    request_abort(time);
+  } else if (pending_kind == 1) {
+    pending_kind = 0;
+    if (fatal_failure)
+      wb_robot_wwi_send_text("error Датчики отказали, повторный старт невозможен.");
+    else if (!start_from_panel(pending_start))
+      printf("mavic2pro_controller: the panel command was rejected.\n");
+  }
+
   switch (state) {
     case INITIALIZATION:
       command_hover(nav.yaw, nav.alt);
@@ -1531,20 +1879,27 @@ static void update_mission(double time, double dt) {
         yaw_slew = yaw0;
         flight_z = home_alt + flight_altitude;
         altitude_cmd = home_alt;
-        if (task_ready ? !build_task_waypoints() : !build_waypoints()) {
-          fatal_failure = 1;
-          motors_enabled = 0;
-          enter_emergency();
-          break;
-        }
         origin_valid = 1;
-        state = READY;
+        state = WAIT;
+        next_panel_cfg = time;
+        printf("mavic2pro_controller: waiting for Start in the robot window.\n");
+        fflush(stdout);
+        send_panel_cfg();
       } else if (time > SENSOR_TIMEOUT) {
         fprintf(stderr,
                 "mavic2pro_controller: sensors did not produce a valid sample. Mission stopped.\n");
         fatal_failure = 1;
         motors_enabled = 0;
         enter_emergency();
+      }
+      break;
+
+    case WAIT:
+      motors_enabled = 0;
+      command_hover(yaw_slew, home_alt);
+      if (time + 1e-9 >= next_panel_cfg) {
+        send_panel_cfg();
+        next_panel_cfg = time + 2.0;
       }
       break;
 
@@ -1615,19 +1970,16 @@ static void update_mission(double time, double dt) {
         break;
       }
       if (waypoint_index >= waypoint_count) {
-        mission_ok = 1;
-        enter_return(time);
+        complete_pass(time);
         break;
       }
       guide_to(waypoints[waypoint_index].x, waypoints[waypoint_index].y, altitude_cmd, FLIGHT_SPEED, dt);
       if (waypoint_reached(waypoints[waypoint_index].x, waypoints[waypoint_index].y)) {
         waypoint_index++;
-        if (waypoint_index >= waypoint_count) {
-          mission_ok = 1;
-          enter_return(time);
-        } else {
+        if (waypoint_index >= waypoint_count)
+          complete_pass(time);
+        else
           arm_timer(time, waypoints[waypoint_index].x, waypoints[waypoint_index].y);
-        }
       } else if (time > leg_deadline) {
         fprintf(stderr,
                 "mavic2pro_controller: waypoint not reached within the time limit. Scan stopped.\n");
@@ -1734,6 +2086,16 @@ static void print_telemetry(double time) {
          "Vertical Acceleration: %.2f m/s^2\n",
          time, state_name(state), x, y, z, nav.heading_deg, nav.vert_acc);
   fflush(stdout);
+  {
+    char panel_state[80];
+    int pass_now = repeat_done + 1;
+    snprintf(panel_state, sizeof(panel_state), "state %s", state_name(state));
+    wb_robot_wwi_send_text(panel_state);
+    if (state == WAIT || state == LANDED || state == INITIALIZATION)
+      pass_now = 0;
+    snprintf(panel_state, sizeof(panel_state), "pass %d %d", pass_now, task_repeats);
+    wb_robot_wwi_send_text(panel_state);
+  }
 
   next_telemetry += 1.0;
   if (next_telemetry < time)
@@ -1749,6 +2111,12 @@ int main(void) {
   wb_robot_init();
   if (!load_task())
     load_zone();
+  if (task_failed) {
+    fprintf(stderr, "mavic2pro_controller: task file was not used. The panel opens with a default area.\n");
+    task_failed = 0;
+    task_ready = 0;
+  }
+  ensure_panel_defaults();
   time_step = (int)wb_robot_get_basic_time_step();
   if (time_step <= 0) {
     fprintf(stderr, "mavic2pro_controller: invalid basicTimeStep. Mission stopped.\n");
@@ -1807,6 +2175,7 @@ int main(void) {
     prev_time = time;
 
     update_navigation(dt);
+    poll_panel();
     update_mission(time, dt);
 
     if (motors_enabled && !fatal_failure)

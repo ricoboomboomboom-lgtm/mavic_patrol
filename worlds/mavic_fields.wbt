@@ -1,0 +1,669 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/Grass.proto"
+
+WorldInfo {
+  info [
+    "500 x 500 m demonstration map. Flat takeoff square, 96 m, at the origin."
+    "Launch bat chooses mavic_manual (TX12) or mavic2pro_controller (patrol)."
+    "Patrol takes off to 1 m, scans a 10 x 10 m rectangle, returns, and lands."
+    "Hedgerows are solid and about 2.5 m tall."
+  ]
+  title "Поля 500 м"
+  basicTimeStep 8
+  defaultDamping Damping {
+    linear 0.5
+    angular 0.5
+  }
+}
+Viewpoint {
+  orientation -0.11914522061843065 0 0.9928768384869221 2.7
+  position 120.0 -58.0 70.0
+  near 0.5
+  far 4000
+  follow "Mavic 2 PRO"
+  followSmoothness 0.25
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+Solid {
+  translation 0 0 -0.2
+  name "ground"
+  children [
+    Shape {
+      appearance Grass {
+        type "mossy"
+        textureTransform TextureTransform {
+          scale 100 100
+        }
+      }
+      geometry Box { size 500 500 0.4 }
+    }
+  ]
+  boundingObject Box { size 500 500 0.4 }
+}
+Solid {
+  name "crops"
+  children [
+    Pose {
+      translation -200.00 -200.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.45 0.58 0.22
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation -200.00 -120.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.36 0.50 0.20
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation -200.00 -40.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.40 0.55 0.28
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation -200.00 40.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.62 0.58 0.24
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation -200.00 120.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.55 0.42 0.22
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation -200.00 200.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.45 0.58 0.22
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation -120.00 -200.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.62 0.58 0.24
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation -120.00 -120.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.55 0.42 0.22
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation -120.00 -40.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.45 0.58 0.22
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation -120.00 40.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.36 0.50 0.20
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation -120.00 120.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.40 0.55 0.28
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation -120.00 200.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.62 0.58 0.24
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation -40.00 -200.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.36 0.50 0.20
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation -40.00 -120.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.40 0.55 0.28
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation -40.00 120.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.45 0.58 0.22
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation -40.00 200.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.36 0.50 0.20
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 40.00 -200.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.55 0.42 0.22
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 40.00 -120.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.45 0.58 0.22
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 40.00 120.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.62 0.58 0.24
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 40.00 200.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.55 0.42 0.22
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 120.00 -200.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.40 0.55 0.28
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 120.00 -120.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.62 0.58 0.24
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 120.00 -40.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.55 0.42 0.22
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 120.00 40.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.45 0.58 0.22
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 120.00 120.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.36 0.50 0.20
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 120.00 200.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.40 0.55 0.28
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 200.00 -200.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.45 0.58 0.22
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 200.00 -120.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.36 0.50 0.20
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 200.00 -40.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.40 0.55 0.28
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 200.00 40.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.62 0.58 0.24
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 200.00 120.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.55 0.42 0.22
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 200.00 200.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.45 0.58 0.22
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 66.00 66.00 0.02 }
+        }
+      ]
+    }
+  ]
+}
+Solid {
+  translation -240.00 0.00 1.25
+  name "hedge-x1"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.18 0.32 0.14
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 2.20 480.00 2.50 }
+    }
+  ]
+  boundingObject Box { size 2.20 480.00 2.50 }
+}
+Solid {
+  translation -160.00 0.00 1.25
+  name "hedge-x2"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.18 0.32 0.14
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 2.20 480.00 2.50 }
+    }
+  ]
+  boundingObject Box { size 2.20 480.00 2.50 }
+}
+Solid {
+  translation -80.00 0.00 1.25
+  name "hedge-x3"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.18 0.32 0.14
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 2.20 480.00 2.50 }
+    }
+  ]
+  boundingObject Box { size 2.20 480.00 2.50 }
+}
+Solid {
+  translation 80.00 0.00 1.25
+  name "hedge-x4"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.18 0.32 0.14
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 2.20 480.00 2.50 }
+    }
+  ]
+  boundingObject Box { size 2.20 480.00 2.50 }
+}
+Solid {
+  translation 160.00 0.00 1.25
+  name "hedge-x5"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.18 0.32 0.14
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 2.20 480.00 2.50 }
+    }
+  ]
+  boundingObject Box { size 2.20 480.00 2.50 }
+}
+Solid {
+  translation 240.00 0.00 1.25
+  name "hedge-x6"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.18 0.32 0.14
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 2.20 480.00 2.50 }
+    }
+  ]
+  boundingObject Box { size 2.20 480.00 2.50 }
+}
+Solid {
+  translation 0.00 -240.00 1.25
+  name "hedge-y7"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.18 0.32 0.14
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 480.00 2.20 2.50 }
+    }
+  ]
+  boundingObject Box { size 480.00 2.20 2.50 }
+}
+Solid {
+  translation 0.00 -160.00 1.25
+  name "hedge-y8"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.18 0.32 0.14
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 480.00 2.20 2.50 }
+    }
+  ]
+  boundingObject Box { size 480.00 2.20 2.50 }
+}
+Solid {
+  translation 0.00 -80.00 1.25
+  name "hedge-y9"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.18 0.32 0.14
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 480.00 2.20 2.50 }
+    }
+  ]
+  boundingObject Box { size 480.00 2.20 2.50 }
+}
+Solid {
+  translation 0.00 80.00 1.25
+  name "hedge-y10"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.18 0.32 0.14
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 480.00 2.20 2.50 }
+    }
+  ]
+  boundingObject Box { size 480.00 2.20 2.50 }
+}
+Solid {
+  translation 0.00 160.00 1.25
+  name "hedge-y11"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.18 0.32 0.14
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 480.00 2.20 2.50 }
+    }
+  ]
+  boundingObject Box { size 480.00 2.20 2.50 }
+}
+Solid {
+  translation 0.00 240.00 1.25
+  name "hedge-y12"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.18 0.32 0.14
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 480.00 2.20 2.50 }
+    }
+  ]
+  boundingObject Box { size 480.00 2.20 2.50 }
+}
+Mavic2Pro {
+  translation 0 0 0.1
+  controller "mavic_manual"
+  window "mavic_panel"
+  supervisor TRUE
+  bodySlot [
+    Accelerometer {
+    }
+    Altimeter {
+    }
+  ]
+  cameraSlot [
+    Camera {
+      width 400
+      height 240
+      near 0.2
+    }
+  ]
+}

@@ -1,0 +1,2335 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/Asphalt.proto"
+
+WorldInfo {
+  info [
+    "500 x 500 m demonstration map. Flat takeoff square, 96 m, at the origin."
+    "Launch bat chooses mavic_manual (TX12) or mavic2pro_controller (patrol)."
+    "Patrol takes off to 1 m, scans a 10 x 10 m rectangle, returns, and lands."
+    "Warehouses and container stacks collide. Water on the east side is visual."
+  ]
+  title "Порт 500 м"
+  basicTimeStep 8
+  defaultDamping Damping {
+    linear 0.5
+    angular 0.5
+  }
+}
+Viewpoint {
+  orientation -0.11914522061843065 0 0.9928768384869221 2.7
+  position 120.0 -58.0 70.0
+  near 0.5
+  far 4000
+  follow "Mavic 2 PRO"
+  followSmoothness 0.25
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+Solid {
+  translation 0 0 -0.2
+  name "ground"
+  children [
+    Shape {
+      appearance Asphalt {
+        textureTransform TextureTransform {
+          scale 70 70
+        }
+      }
+      geometry Box { size 500 500 0.4 }
+    }
+  ]
+  boundingObject Box { size 500 500 0.4 }
+}
+Solid {
+  name "basin"
+  children [
+    Pose {
+      translation 215.00 0.00 0.02
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.11 0.30 0.46
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 70.00 500.00 0.02 }
+        }
+      ]
+    }
+  ]
+}
+Solid {
+  translation 172.00 0.00 0.80
+  name "quay"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.42 0.42 0.40
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 3.00 420.00 1.60 }
+    }
+  ]
+  boundingObject Box { size 3.00 420.00 1.60 }
+}
+Solid {
+  translation -150.00 140.00 7.00
+  name "warehouse1"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.63 0.63 0.58
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 46.00 22.00 14.00 }
+    }
+  ]
+  boundingObject Box { size 46.00 22.00 14.00 }
+}
+Solid {
+  translation -40.00 150.00 7.00
+  name "warehouse2"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.71 0.71 0.58
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 46.00 22.00 14.00 }
+    }
+  ]
+  boundingObject Box { size 46.00 22.00 14.00 }
+}
+Solid {
+  translation 60.00 140.00 7.00
+  name "warehouse3"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.55 0.55 0.58
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 46.00 22.00 14.00 }
+    }
+  ]
+  boundingObject Box { size 46.00 22.00 14.00 }
+}
+Solid {
+  translation -160.00 -140.00 7.00
+  name "warehouse4"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.63 0.63 0.58
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 46.00 22.00 14.00 }
+    }
+  ]
+  boundingObject Box { size 46.00 22.00 14.00 }
+}
+Solid {
+  translation -30.00 -160.00 7.00
+  name "warehouse5"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.71 0.71 0.58
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 46.00 22.00 14.00 }
+    }
+  ]
+  boundingObject Box { size 46.00 22.00 14.00 }
+}
+Solid {
+  translation 80.00 -130.00 7.00
+  name "warehouse6"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.55 0.55 0.58
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 46.00 22.00 14.00 }
+    }
+  ]
+  boundingObject Box { size 46.00 22.00 14.00 }
+}
+Solid {
+  translation -150.00 0.00 7.00
+  name "warehouse7"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.63 0.63 0.58
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 46.00 22.00 14.00 }
+    }
+  ]
+  boundingObject Box { size 46.00 22.00 14.00 }
+}
+Solid {
+  translation -181.07 -166.00 1.30
+  name "box1"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -179.42 -166.00 3.90
+  name "box2"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -178.04 -166.00 6.50
+  name "box3"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -180.53 -94.00 1.30
+  name "box4"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -180.86 -70.00 1.30
+  name "box5"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -178.04 -70.00 3.90
+  name "box6"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -181.69 2.00 1.30
+  name "box7"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.72 0.58 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -179.47 26.00 1.30
+  name "box8"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -181.76 26.00 3.90
+  name "box9"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -178.35 50.00 1.30
+  name "box10"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.48 0.30
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -178.84 98.00 1.30
+  name "box11"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -179.03 98.00 3.90
+  name "box12"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -178.09 122.00 1.30
+  name "box13"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -180.64 122.00 3.90
+  name "box14"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -181.87 122.00 6.50
+  name "box15"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -180.05 146.00 1.30
+  name "box16"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.72 0.58 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -180.77 146.00 3.90
+  name "box17"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.72 0.58 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -178.82 146.00 6.50
+  name "box18"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.72 0.58 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -153.67 -166.00 1.30
+  name "box19"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -150.99 -166.00 3.90
+  name "box20"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -152.97 -166.00 6.50
+  name "box21"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -153.25 -142.00 1.30
+  name "box22"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.62 0.22 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -152.65 -142.00 3.90
+  name "box23"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.62 0.22 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -151.31 -142.00 6.50
+  name "box24"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.62 0.22 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -153.21 -118.00 1.30
+  name "box25"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -153.01 -94.00 1.30
+  name "box26"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.48 0.30
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -153.22 -70.00 1.30
+  name "box27"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.72 0.58 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -150.99 26.00 1.30
+  name "box28"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -152.96 50.00 1.30
+  name "box29"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.48 0.30
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -153.18 74.00 1.30
+  name "box30"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.62 0.22 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -151.87 74.00 3.90
+  name "box31"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.62 0.22 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -151.43 122.00 1.30
+  name "box32"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -151.33 122.00 3.90
+  name "box33"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -151.70 170.00 1.30
+  name "box34"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.48 0.30
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -153.19 170.00 3.90
+  name "box35"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.48 0.30
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -125.52 -166.00 1.30
+  name "box36"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.48 0.30
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -125.16 -142.00 1.30
+  name "box37"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.72 0.58 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -122.98 -142.00 3.90
+  name "box38"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.72 0.58 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -123.30 -142.00 6.50
+  name "box39"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.72 0.58 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -123.58 -46.00 1.30
+  name "box40"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -122.15 -22.00 1.30
+  name "box41"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -125.52 -22.00 3.90
+  name "box42"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -123.35 26.00 1.30
+  name "box43"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.48 0.30
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -123.58 26.00 3.90
+  name "box44"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.48 0.30
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -123.47 98.00 1.30
+  name "box45"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.48 0.30
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -124.84 98.00 3.90
+  name "box46"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.48 0.30
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -123.60 146.00 1.30
+  name "box47"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.72 0.58 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -124.00 146.00 3.90
+  name "box48"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.72 0.58 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -96.87 -118.00 1.30
+  name "box49"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -97.94 -94.00 1.30
+  name "box50"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -96.06 -22.00 1.30
+  name "box51"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.72 0.58 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -95.41 74.00 1.30
+  name "box52"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -94.46 74.00 3.90
+  name "box53"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -97.59 98.00 1.30
+  name "box54"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -95.01 170.00 1.30
+  name "box55"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.72 0.58 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -94.20 170.00 3.90
+  name "box56"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.72 0.58 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -67.53 -190.00 1.30
+  name "box57"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.62 0.22 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -67.79 -142.00 1.30
+  name "box58"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.72 0.58 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -66.42 -70.00 1.30
+  name "box59"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -68.47 -70.00 3.90
+  name "box60"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -67.95 -70.00 6.50
+  name "box61"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -67.55 50.00 1.30
+  name "box62"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -67.24 50.00 3.90
+  name "box63"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -68.12 50.00 6.50
+  name "box64"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -66.71 74.00 1.30
+  name "box65"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.72 0.58 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -67.20 98.00 1.30
+  name "box66"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -68.31 122.00 1.30
+  name "box67"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -69.13 146.00 1.30
+  name "box68"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.72 0.58 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -68.41 146.00 3.90
+  name "box69"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.72 0.58 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -41.55 -166.00 1.30
+  name "box70"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.72 0.58 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -38.24 -166.00 3.90
+  name "box71"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.72 0.58 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -41.37 -118.00 1.30
+  name "box72"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -38.28 -118.00 3.90
+  name "box73"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -38.62 -94.00 1.30
+  name "box74"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.62 0.22 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -38.39 -94.00 3.90
+  name "box75"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.62 0.22 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -41.78 -94.00 6.50
+  name "box76"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.62 0.22 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -40.01 -70.00 1.30
+  name "box77"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -38.07 98.00 1.30
+  name "box78"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.72 0.58 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -40.11 98.00 3.90
+  name "box79"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.72 0.58 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -40.33 98.00 6.50
+  name "box80"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.72 0.58 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -39.90 146.00 1.30
+  name "box81"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.48 0.30
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -41.88 170.00 1.30
+  name "box82"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -11.57 -166.00 1.30
+  name "box83"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -10.38 -166.00 3.90
+  name "box84"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -12.80 -142.00 1.30
+  name "box85"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.62 0.22 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -13.78 -142.00 3.90
+  name "box86"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.62 0.22 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -13.52 -142.00 6.50
+  name "box87"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.62 0.22 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -13.74 -118.00 1.30
+  name "box88"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.62 0.22 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -11.68 -118.00 3.90
+  name "box89"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.62 0.22 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -11.62 -118.00 6.50
+  name "box90"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.62 0.22 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -10.17 98.00 1.30
+  name "box91"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.48 0.30
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -10.57 98.00 3.90
+  name "box92"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.48 0.30
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -13.03 98.00 6.50
+  name "box93"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.48 0.30
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -12.55 170.00 1.30
+  name "box94"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.48 0.30
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation -12.74 170.00 3.90
+  name "box95"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.48 0.30
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 15.14 -190.00 1.30
+  name "box96"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 17.36 -190.00 3.90
+  name "box97"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 16.83 -190.00 6.50
+  name "box98"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 17.15 -166.00 1.30
+  name "box99"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 15.21 -166.00 3.90
+  name "box100"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 15.88 -142.00 1.30
+  name "box101"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.62 0.22 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 17.57 -142.00 3.90
+  name "box102"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.62 0.22 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 14.48 74.00 1.30
+  name "box103"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.72 0.58 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 14.40 74.00 3.90
+  name "box104"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.72 0.58 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 16.63 74.00 6.50
+  name "box105"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.72 0.58 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 14.79 98.00 1.30
+  name "box106"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 16.08 98.00 3.90
+  name "box107"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 17.75 122.00 1.30
+  name "box108"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 16.96 122.00 3.90
+  name "box109"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 14.90 170.00 1.30
+  name "box110"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 17.49 170.00 3.90
+  name "box111"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 16.81 170.00 6.50
+  name "box112"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 42.78 -190.00 1.30
+  name "box113"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 43.10 -190.00 3.90
+  name "box114"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 43.76 -190.00 6.50
+  name "box115"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 45.47 -166.00 1.30
+  name "box116"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.48 0.30
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 42.60 -166.00 3.90
+  name "box117"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.48 0.30
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 44.04 -166.00 6.50
+  name "box118"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.48 0.30
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 42.96 -118.00 1.30
+  name "box119"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.72 0.58 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 44.18 -118.00 3.90
+  name "box120"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.72 0.58 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 42.81 -118.00 6.50
+  name "box121"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.72 0.58 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 43.64 -94.00 1.30
+  name "box122"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 43.32 -94.00 3.90
+  name "box123"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 43.77 -94.00 6.50
+  name "box124"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 45.09 -70.00 1.30
+  name "box125"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 42.26 -70.00 3.90
+  name "box126"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 42.32 -70.00 6.50
+  name "box127"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 43.86 146.00 1.30
+  name "box128"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 43.04 170.00 1.30
+  name "box129"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 71.99 -166.00 1.30
+  name "box130"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.62 0.22 0.18
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 71.62 -118.00 1.30
+  name "box131"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.48 0.30
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 70.09 -118.00 3.90
+  name "box132"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.48 0.30
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 70.32 -118.00 6.50
+  name "box133"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.48 0.30
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 73.00 -70.00 1.30
+  name "box134"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 72.12 -70.00 3.90
+  name "box135"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 71.71 -46.00 1.30
+  name "box136"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 73.14 -46.00 3.90
+  name "box137"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 70.08 -46.00 6.50
+  name "box138"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.20 0.35 0.62
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 73.11 50.00 1.30
+  name "box139"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 70.31 50.00 3.90
+  name "box140"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 72.52 98.00 1.30
+  name "box141"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Solid {
+  translation 70.10 98.00 3.90
+  name "box142"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.35 0.35 0.38
+        metalness 0
+        roughness 1
+      }
+      geometry Box { size 6.10 2.40 2.60 }
+    }
+  ]
+  boundingObject Box { size 6.10 2.40 2.60 }
+}
+Mavic2Pro {
+  translation 0 0 0.1
+  controller "mavic_manual"
+  window "mavic_panel"
+  supervisor TRUE
+  bodySlot [
+    Accelerometer {
+    }
+    Altimeter {
+    }
+  ]
+  cameraSlot [
+    Camera {
+      width 400
+      height 240
+      near 0.2
+    }
+  ]
+}

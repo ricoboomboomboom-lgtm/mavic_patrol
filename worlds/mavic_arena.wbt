@@ -1,0 +1,320 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/Grass.proto"
+
+WorldInfo {
+  info [
+    "500 x 500 m demonstration map. Flat takeoff square, 96 m, at the origin."
+    "Launch bat chooses mavic_manual (TX12) or mavic2pro_controller (patrol)."
+    "Patrol takes off to 1 m, scans a 10 x 10 m rectangle, returns, and lands."
+    "Open grass field with a 50 m reference grid."
+  ]
+  title "Арена 500 м"
+  basicTimeStep 8
+  defaultDamping Damping {
+    linear 0.5
+    angular 0.5
+  }
+}
+Viewpoint {
+  orientation -0.11914522061843065 0 0.9928768384869221 2.7
+  position 120.0 -58.0 70.0
+  near 0.5
+  far 4000
+  follow "Mavic 2 PRO"
+  followSmoothness 0.25
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+Solid {
+  translation 0 0 -0.2
+  name "ground"
+  children [
+    Shape {
+      appearance Grass {
+        type "mossy"
+        textureTransform TextureTransform {
+          scale 100 100
+        }
+      }
+      geometry Box { size 500 500 0.4 }
+    }
+  ]
+  boundingObject Box { size 500 500 0.4 }
+}
+Solid {
+  name "marks"
+  children [
+    Pose {
+      translation -200.00 0.00 0.02
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.92 0.92 0.88
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 0.40 500.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 0.00 -200.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.92 0.92 0.88
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 500.00 0.40 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation -150.00 0.00 0.02
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.92 0.92 0.88
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 0.40 500.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 0.00 -150.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.92 0.92 0.88
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 500.00 0.40 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation -100.00 0.00 0.02
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.92 0.92 0.88
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 0.40 500.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 0.00 -100.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.92 0.92 0.88
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 500.00 0.40 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation -50.00 0.00 0.02
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.92 0.92 0.88
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 0.40 500.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 0.00 -50.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.92 0.92 0.88
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 500.00 0.40 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 0.00 0.00 0.02
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.92 0.92 0.88
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 0.40 500.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 0.00 0.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.92 0.92 0.88
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 500.00 0.40 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 50.00 0.00 0.02
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.92 0.92 0.88
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 0.40 500.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 0.00 50.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.92 0.92 0.88
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 500.00 0.40 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 100.00 0.00 0.02
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.92 0.92 0.88
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 0.40 500.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 0.00 100.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.92 0.92 0.88
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 500.00 0.40 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 150.00 0.00 0.02
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.92 0.92 0.88
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 0.40 500.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 0.00 150.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.92 0.92 0.88
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 500.00 0.40 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 200.00 0.00 0.02
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.92 0.92 0.88
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 0.40 500.00 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 0.00 200.00 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.92 0.92 0.88
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 500.00 0.40 0.02 }
+        }
+      ]
+    }
+    Pose {
+      translation 0.00 0.00 0.04
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.55 0.62 0.40
+            metalness 0
+            roughness 1
+          }
+          geometry Box { size 90.00 90.00 0.02 }
+        }
+      ]
+    }
+  ]
+}
+Mavic2Pro {
+  translation 0 0 0.1
+  controller "mavic_manual"
+  window "mavic_panel"
+  supervisor TRUE
+  bodySlot [
+    Accelerometer {
+    }
+    Altimeter {
+    }
+  ]
+  cameraSlot [
+    Camera {
+      width 400
+      height 240
+      near 0.2
+    }
+  ]
+}
