@@ -20,6 +20,9 @@ if not exist "%~dp0controllers\mavic2pro_controller\mavic2pro_controller.exe" (
   exit /b 1
 )
 
+set /p VER=<"%~dp0VERSION"
+echo.
+echo  БПЛА сборка, версия %VER%
 echo.
 echo  1  Арена
 echo  2  Холмы и лес
